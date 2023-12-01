@@ -1,0 +1,3 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<session version="1.0">&#x0A;<refactoring comment="Rename resource &apos;RTOS_APP/rtos_f4.ioc&apos; to &apos;RTOS_APP.ioc&apos;" description="Rename resource &apos;rtos_f4.ioc&apos;" flags="7" id="org.eclipse.ltk.core.refactoring.rename.resource" input="rtos_f4.ioc" name="RTOS_APP.ioc" stamp="1701452325276" updateReferences="true"/>&#x0A;<refactoring comment="Rename resource &apos;RTOS_APP/rtos_f4 Debug.launch&apos; to &apos;RTOS_APP.launch&apos;" description="Rename resource &apos;rtos_f4 Debug.launch&apos;" flags="7" id="org.eclipse.ltk.core.refactoring.rename.resource" input="rtos_f4 Debug.launch" name="RTOS_APP.launch" stamp="1701452333648" updateReferences="true"/>
+</session>
