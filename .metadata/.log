@@ -1,0 +1,81 @@
+!SESSION 2023-12-01 19:34:49.792 -----------------------------------------------
+eclipse.buildId=Version 1.11.2
+java.version=11.0.16
+java.vendor=Eclipse Adoptium
+BootLoader constants: OS=win32, ARCH=x86_64, WS=win32, NL=en_US
+Command-line arguments:  -os win32 -ws win32 -arch x86_64
+
+!ENTRY com.st.stm32cube.ide.mcu.informationcenter 4 4 2023-12-01 19:34:58.186
+!MESSAGE CubeMX plugin appears to be active, Log4j initialization might be too late.
+
+!ENTRY com.st.stm32cube.ide.mcu.informationcenter 1 1 2023-12-01 19:34:58.269
+!MESSAGE Log4j initialized with config file C:\Users\zashr\OneDrive\Desktop\NTI\GP\Target\ADAS_with_OTA_Updates\.metadata\.log4j.xml
+
+!ENTRY com.st.stm32cube.ide.mcu.ide 1 1 2023-12-01 19:35:02.475
+!MESSAGE Started RMI Server, listening on port 41337
+
+!ENTRY com.percepio.tracealyzer.core 1 0 2023-12-01 19:35:02.564
+!MESSAGE Activator.start(): Called from com.percepio.tracealyzer.core, version: 1.1.4.v201906050834
+
+!ENTRY com.percepio.tracealyzer.core 2 0 2023-12-01 19:35:02.571
+!MESSAGE ContextManager.reportWarning(): No debug context found
+
+!ENTRY com.percepio.tracealyzer.ui 1 0 2023-12-01 19:35:02.578
+!MESSAGE Activator.start(): Called from com.percepio.tracealyzer.ui, version: 1.1.4.v201906050834
+
+!ENTRY org.eclipse.core.net 4 0 2023-12-01 19:35:20.215
+!MESSAGE WinHttp.GetProxyForUrl for pac failed with error 'The handle is invalid.
+' #6.
+
+!ENTRY org.eclipse.core.resources 4 77 2023-12-01 19:35:24.347
+!MESSAGE Invalid project description.
+!SUBENTRY 1 unknown 0 0 2023-12-01 19:35:24.347
+!MESSAGE OK
+!SUBENTRY 1 org.eclipse.core.resources 4 77 2023-12-01 19:35:24.347
+!MESSAGE C:\Users\zashr\OneDrive\Desktop\NTI\GP\Target\ADAS_with_OTA_Updates\RTOS_APP overlaps the location of another project: 'RTOS_APP'
+
+!ENTRY com.st.stm32cube.common.projectcreation 4 0 2023-12-01 19:35:24.348
+!MESSAGE Project is null
+
+!ENTRY org.eclipse.core.resources 4 77 2023-12-01 19:35:25.921
+!MESSAGE Invalid project description.
+!SUBENTRY 1 unknown 0 0 2023-12-01 19:35:25.921
+!MESSAGE OK
+!SUBENTRY 1 org.eclipse.core.resources 4 77 2023-12-01 19:35:25.921
+!MESSAGE C:\Users\zashr\OneDrive\Desktop\NTI\GP\Target\ADAS_with_OTA_Updates\RTOS_APP overlaps the location of another project: 'RTOS_APP'
+
+!ENTRY com.st.stm32cube.common.projectcreation 4 0 2023-12-01 19:35:25.922
+!MESSAGE Project is null
+
+!ENTRY org.eclipse.cdt.core 1 0 2023-12-01 19:35:30.775
+!MESSAGE Indexed 'RTOS_APP' (39 sources, 146 headers) in 7.9 sec: 14,693 declarations; 75,714 references; 2 unresolved inclusions; 152 syntax errors; 148 unresolved names (0.16%)
+
+!ENTRY org.eclipse.core.resources 4 77 2023-12-01 19:35:32.635
+!MESSAGE Invalid project description.
+!SUBENTRY 1 unknown 0 0 2023-12-01 19:35:32.636
+!MESSAGE OK
+!SUBENTRY 1 org.eclipse.core.resources 4 77 2023-12-01 19:35:32.636
+!MESSAGE C:\Users\zashr\OneDrive\Desktop\NTI\GP\Target\ADAS_with_OTA_Updates\RTOS_APP overlaps the location of another project: 'RTOS_APP'
+
+!ENTRY com.st.stm32cube.common.projectcreation 4 0 2023-12-01 19:35:32.636
+!MESSAGE Project is null
+
+!ENTRY org.eclipse.core.resources 4 77 2023-12-01 19:36:14.439
+!MESSAGE Invalid project description.
+!SUBENTRY 1 unknown 0 0 2023-12-01 19:36:14.439
+!MESSAGE OK
+!SUBENTRY 1 org.eclipse.core.resources 4 77 2023-12-01 19:36:14.439
+!MESSAGE C:\Users\zashr\OneDrive\Desktop\NTI\GP\Target\ADAS_with_OTA_Updates\RTOS_APP overlaps the location of another project: 'RTOS_APP'
+
+!ENTRY com.st.stm32cube.common.projectcreation 4 0 2023-12-01 19:36:14.440
+!MESSAGE Project is null
+
+!ENTRY org.eclipse.core.resources 4 77 2023-12-01 19:36:16.042
+!MESSAGE Invalid project description.
+!SUBENTRY 1 unknown 0 0 2023-12-01 19:36:16.042
+!MESSAGE OK
+!SUBENTRY 1 org.eclipse.core.resources 4 77 2023-12-01 19:36:16.042
+!MESSAGE C:\Users\zashr\OneDrive\Desktop\NTI\GP\Target\ADAS_with_OTA_Updates\RTOS_APP overlaps the location of another project: 'RTOS_APP'
+
+!ENTRY com.st.stm32cube.common.projectcreation 4 0 2023-12-01 19:36:16.043
+!MESSAGE Project is null
