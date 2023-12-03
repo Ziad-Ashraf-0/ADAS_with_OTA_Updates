@@ -1,7 +1,492 @@
-19:38:07 **** Incremental Build of configuration Debug for project RTOS_APP ****
+13:55:21 **** Incremental Build of configuration Debug for project RTOS_APP ****
+make -j4 all 
+arm-none-eabi-gcc "../Core/Src/main.c" -mcpu=cortex-m4 -std=gnu11 -g3 -DDEBUG -DUSE_HAL_DRIVER -DSTM32F429xx -c -I../Core/Inc -I../Drivers/STM32F4xx_HAL_Driver/Inc -I../Drivers/STM32F4xx_HAL_Driver/Inc/Legacy -I../Drivers/CMSIS/Device/ST/STM32F4xx/Include -I../Drivers/CMSIS/Include -I../Middlewares/Third_Party/FreeRTOS/Source/include -I../Middlewares/Third_Party/FreeRTOS/Source/portable/GCC/ARM_CM4F -I../Middlewares/Third_Party/FreeRTOS/Source/CMSIS_RTOS_V2 -I"C:/Users/Ziad/Desktop/NTI/GP/ADAS_with_OTA_Updates/RTOS_APP/IR_Sensor/inc" -I"C:/Users/Ziad/Desktop/NTI/GP/ADAS_with_OTA_Updates/RTOS_APP/Motor_T/inc" -O0 -ffunction-sections -fdata-sections -Wall -fstack-usage -MMD -MP -MF"Core/Src/main.d" -MT"Core/Src/main.o" --specs=nano.specs -mfpu=fpv4-sp-d16 -mfloat-abi=hard -mthumb -o "Core/Src/main.o"
+../Core/Src/main.c: In function 'Adaptive':
+../Core/Src/main.c:658:49: warning: implicit declaration of function 'strlen' [-Wimplicit-function-declaration]
+  658 |    HAL_UART_Transmit(&huart1, (uint8_t*) temp2, strlen(temp2), 10);
+      |                                                 ^~~~~~
+../Core/Src/main.c:658:49: warning: incompatible implicit declaration of built-in function 'strlen'
+../Core/Src/main.c:29:1: note: include '<string.h>' or provide a declaration of 'strlen'
+   28 | #include "lane_detection.h"
+  +++ |+#include <string.h>
+   29 | /* USER CODE END Includes */
+../Core/Src/main.c: In function 'BlindSpot':
+../Core/Src/main.c:705:49: warning: incompatible implicit declaration of built-in function 'strlen'
+  705 |    HAL_UART_Transmit(&huart1, (uint8_t*) temp2, strlen(temp2), 10);
+      |                                                 ^~~~~~
+../Core/Src/main.c:705:49: note: include '<string.h>' or provide a declaration of 'strlen'
+../Core/Src/main.c: In function 'AutoPark':
+../Core/Src/main.c:736:49: warning: incompatible implicit declaration of built-in function 'strlen'
+  736 |    HAL_UART_Transmit(&huart1, (uint8_t*) temp2, strlen(temp2), 10);
+      |                                                 ^~~~~~
+../Core/Src/main.c:736:49: note: include '<string.h>' or provide a declaration of 'strlen'
+../Core/Src/main.c:753:5: warning: "/*" within comment [-Wcomment]
+  753 |     /*Do Nothing*/
+      |      
+arm-none-eabi-gcc -o "RTOS_APP.elf" @"objects.list"   -mcpu=cortex-m4 -T"C:\Users\Ziad\Desktop\NTI\GP\ADAS_with_OTA_Updates\RTOS_APP\STM32F429ZITX_FLASH.ld" --specs=nosys.specs -Wl,-Map="RTOS_APP.map" -Wl,--gc-sections -static --specs=nano.specs -mfpu=fpv4-sp-d16 -mfloat-abi=hard -mthumb -Wl,--start-group -lc -lm -Wl,--end-group
+Finished building target: RTOS_APP.elf
+ 
+arm-none-eabi-size   RTOS_APP.elf 
+arm-none-eabi-objdump -h -S  RTOS_APP.elf  > "RTOS_APP.list"
+arm-none-eabi-objcopy  -O ihex  RTOS_APP.elf  "RTOS_APP.hex"
+   text	   data	    bss	    dec	    hex	filename
+  37300	     40	  20832	  58172	   e33c	RTOS_APP.elf
+arm-none-eabi-objcopy  -O binary  RTOS_APP.elf  "RTOS_APP.bin"
+Finished building: default.size.stdout
+ 
+Finished building: RTOS_APP.hex
+Finished building: RTOS_APP.bin
+ 
+ 
+Finished building: RTOS_APP.list
+ 
+13:55:33 **** Incremental Build of configuration Debug for project RTOS_APP ****
 make -j4 all 
 arm-none-eabi-size   RTOS_APP.elf 
    text	   data	    bss	    dec	    hex	filename
-  36404	     40	  20816	  57260	   dfac	RTOS_APP.elf
+  37300	     40	  20832	  58172	   e33c	RTOS_APP.elf
 Finished building: default.size.stdout
+ 
+13:57:03 **** Incremental Build of configuration Debug for project RTOS_APP ****
+make -j4 all 
+arm-none-eabi-gcc "../Core/Src/main.c" -mcpu=cortex-m4 -std=gnu11 -g3 -DDEBUG -DUSE_HAL_DRIVER -DSTM32F429xx -c -I../Core/Inc -I../Drivers/STM32F4xx_HAL_Driver/Inc -I../Drivers/STM32F4xx_HAL_Driver/Inc/Legacy -I../Drivers/CMSIS/Device/ST/STM32F4xx/Include -I../Drivers/CMSIS/Include -I../Middlewares/Third_Party/FreeRTOS/Source/include -I../Middlewares/Third_Party/FreeRTOS/Source/portable/GCC/ARM_CM4F -I../Middlewares/Third_Party/FreeRTOS/Source/CMSIS_RTOS_V2 -I"C:/Users/Ziad/Desktop/NTI/GP/ADAS_with_OTA_Updates/RTOS_APP/IR_Sensor/inc" -I"C:/Users/Ziad/Desktop/NTI/GP/ADAS_with_OTA_Updates/RTOS_APP/Motor_T/inc" -O0 -ffunction-sections -fdata-sections -Wall -fstack-usage -MMD -MP -MF"Core/Src/main.d" -MT"Core/Src/main.o" --specs=nano.specs -mfpu=fpv4-sp-d16 -mfloat-abi=hard -mthumb -o "Core/Src/main.o"
+../Core/Src/main.c: In function 'Adaptive':
+../Core/Src/main.c:658:49: warning: implicit declaration of function 'strlen' [-Wimplicit-function-declaration]
+  658 |    HAL_UART_Transmit(&huart1, (uint8_t*) temp2, strlen(temp2), 10);
+      |                                                 ^~~~~~
+../Core/Src/main.c:658:49: warning: incompatible implicit declaration of built-in function 'strlen'
+../Core/Src/main.c:29:1: note: include '<string.h>' or provide a declaration of 'strlen'
+   28 | #include "lane_detection.h"
+  +++ |+#include <string.h>
+   29 | /* USER CODE END Includes */
+../Core/Src/main.c: In function 'BlindSpot':
+../Core/Src/main.c:705:49: warning: incompatible implicit declaration of built-in function 'strlen'
+  705 |    HAL_UART_Transmit(&huart1, (uint8_t*) temp2, strlen(temp2), 10);
+      |                                                 ^~~~~~
+../Core/Src/main.c:705:49: note: include '<string.h>' or provide a declaration of 'strlen'
+../Core/Src/main.c: In function 'AutoPark':
+../Core/Src/main.c:736:49: warning: incompatible implicit declaration of built-in function 'strlen'
+  736 |    HAL_UART_Transmit(&huart1, (uint8_t*) temp2, strlen(temp2), 10);
+      |                                                 ^~~~~~
+../Core/Src/main.c:736:49: note: include '<string.h>' or provide a declaration of 'strlen'
+../Core/Src/main.c:753:5: warning: "/*" within comment [-Wcomment]
+  753 |     /*Do Nothing*/
+      |      
+arm-none-eabi-gcc -o "RTOS_APP.elf" @"objects.list"   -mcpu=cortex-m4 -T"C:\Users\Ziad\Desktop\NTI\GP\ADAS_with_OTA_Updates\RTOS_APP\STM32F429ZITX_FLASH.ld" --specs=nosys.specs -Wl,-Map="RTOS_APP.map" -Wl,--gc-sections -static --specs=nano.specs -mfpu=fpv4-sp-d16 -mfloat-abi=hard -mthumb -Wl,--start-group -lc -lm -Wl,--end-group
+Finished building target: RTOS_APP.elf
+ 
+arm-none-eabi-size   RTOS_APP.elf 
+arm-none-eabi-objdump -h -S  RTOS_APP.elf  > "RTOS_APP.list"
+arm-none-eabi-objcopy  -O ihex  RTOS_APP.elf  "RTOS_APP.hex"
+   text	   data	    bss	    dec	    hex	filename
+  36260	     24	  20800	  57084	   defc	RTOS_APP.elf
+arm-none-eabi-objcopy  -O binary  RTOS_APP.elf  "RTOS_APP.bin"
+Finished building: default.size.stdout
+ 
+Finished building: RTOS_APP.hex
+Finished building: RTOS_APP.bin
+ 
+ 
+Finished building: RTOS_APP.list
+ 
+13:57:11 **** Incremental Build of configuration Debug for project RTOS_APP ****
+make -j4 all 
+arm-none-eabi-size   RTOS_APP.elf 
+   text	   data	    bss	    dec	    hex	filename
+  36260	     24	  20800	  57084	   defc	RTOS_APP.elf
+Finished building: default.size.stdout
+ 
+15:13:06 **** Incremental Build of configuration Debug for project RTOS_APP ****
+make -j4 all 
+arm-none-eabi-size   RTOS_APP.elf 
+   text	   data	    bss	    dec	    hex	filename
+  36260	     24	  20800	  57084	   defc	RTOS_APP.elf
+Finished building: default.size.stdout
+ 
+15:16:20 **** Incremental Build of configuration Debug for project RTOS_APP ****
+make -j4 all 
+arm-none-eabi-size   RTOS_APP.elf 
+   text	   data	    bss	    dec	    hex	filename
+  36260	     24	  20800	  57084	   defc	RTOS_APP.elf
+Finished building: default.size.stdout
+ 
+15:22:23 **** Incremental Build of configuration Debug for project RTOS_APP ****
+make -j4 all 
+arm-none-eabi-gcc "../Core/Src/main.c" -mcpu=cortex-m4 -std=gnu11 -g3 -DDEBUG -DUSE_HAL_DRIVER -DSTM32F429xx -c -I../Core/Inc -I../Drivers/STM32F4xx_HAL_Driver/Inc -I../Drivers/STM32F4xx_HAL_Driver/Inc/Legacy -I../Drivers/CMSIS/Device/ST/STM32F4xx/Include -I../Drivers/CMSIS/Include -I../Middlewares/Third_Party/FreeRTOS/Source/include -I../Middlewares/Third_Party/FreeRTOS/Source/portable/GCC/ARM_CM4F -I../Middlewares/Third_Party/FreeRTOS/Source/CMSIS_RTOS_V2 -I"C:/Users/Ziad/Desktop/NTI/GP/ADAS_with_OTA_Updates/RTOS_APP/IR_Sensor/inc" -I"C:/Users/Ziad/Desktop/NTI/GP/ADAS_with_OTA_Updates/RTOS_APP/Motor_T/inc" -O0 -ffunction-sections -fdata-sections -Wall -fstack-usage -MMD -MP -MF"Core/Src/main.d" -MT"Core/Src/main.o" --specs=nano.specs -mfpu=fpv4-sp-d16 -mfloat-abi=hard -mthumb -o "Core/Src/main.o"
+../Core/Src/main.c: In function 'Adaptive':
+../Core/Src/main.c:658:49: warning: implicit declaration of function 'strlen' [-Wimplicit-function-declaration]
+  658 |    HAL_UART_Transmit(&huart1, (uint8_t*) temp2, strlen(temp2), 10);
+      |                                                 ^~~~~~
+../Core/Src/main.c:658:49: warning: incompatible implicit declaration of built-in function 'strlen'
+../Core/Src/main.c:29:1: note: include '<string.h>' or provide a declaration of 'strlen'
+   28 | #include "lane_detection.h"
+  +++ |+#include <string.h>
+   29 | /* USER CODE END Includes */
+../Core/Src/main.c: In function 'BlindSpot':
+../Core/Src/main.c:705:49: warning: incompatible implicit declaration of built-in function 'strlen'
+  705 |    HAL_UART_Transmit(&huart1, (uint8_t*) temp2, strlen(temp2), 10);
+      |                                                 ^~~~~~
+../Core/Src/main.c:705:49: note: include '<string.h>' or provide a declaration of 'strlen'
+../Core/Src/main.c: In function 'AutoPark':
+../Core/Src/main.c:736:49: warning: incompatible implicit declaration of built-in function 'strlen'
+  736 |    HAL_UART_Transmit(&huart1, (uint8_t*) temp2, strlen(temp2), 10);
+      |                                                 ^~~~~~
+../Core/Src/main.c:736:49: note: include '<string.h>' or provide a declaration of 'strlen'
+../Core/Src/main.c:753:5: warning: "/*" within comment [-Wcomment]
+  753 |     /*Do Nothing*/
+      |      
+arm-none-eabi-gcc -o "RTOS_APP.elf" @"objects.list"   -mcpu=cortex-m4 -T"C:\Users\Ziad\Desktop\NTI\GP\ADAS_with_OTA_Updates\RTOS_APP\STM32F429ZITX_FLASH.ld" --specs=nosys.specs -Wl,-Map="RTOS_APP.map" -Wl,--gc-sections -static --specs=nano.specs -mfpu=fpv4-sp-d16 -mfloat-abi=hard -mthumb -Wl,--start-group -lc -lm -Wl,--end-group
+Finished building target: RTOS_APP.elf
+ 
+arm-none-eabi-size   RTOS_APP.elf 
+arm-none-eabi-objdump -h -S  RTOS_APP.elf  > "RTOS_APP.list"
+arm-none-eabi-objcopy  -O ihex  RTOS_APP.elf  "RTOS_APP.hex"
+   text	   data	    bss	    dec	    hex	filename
+  36276	     24	  20800	  57100	   df0c	RTOS_APP.elf
+arm-none-eabi-objcopy  -O binary  RTOS_APP.elf  "RTOS_APP.bin"
+Finished building: default.size.stdout
+ 
+Finished building: RTOS_APP.hex
+Finished building: RTOS_APP.bin
+ 
+ 
+Finished building: RTOS_APP.list
+ 
+15:25:25 **** Incremental Build of configuration Debug for project RTOS_APP ****
+make -j4 all 
+arm-none-eabi-gcc "../Core/Src/main.c" -mcpu=cortex-m4 -std=gnu11 -g3 -DDEBUG -DUSE_HAL_DRIVER -DSTM32F429xx -c -I../Core/Inc -I../Drivers/STM32F4xx_HAL_Driver/Inc -I../Drivers/STM32F4xx_HAL_Driver/Inc/Legacy -I../Drivers/CMSIS/Device/ST/STM32F4xx/Include -I../Drivers/CMSIS/Include -I../Middlewares/Third_Party/FreeRTOS/Source/include -I../Middlewares/Third_Party/FreeRTOS/Source/portable/GCC/ARM_CM4F -I../Middlewares/Third_Party/FreeRTOS/Source/CMSIS_RTOS_V2 -I"C:/Users/Ziad/Desktop/NTI/GP/ADAS_with_OTA_Updates/RTOS_APP/IR_Sensor/inc" -I"C:/Users/Ziad/Desktop/NTI/GP/ADAS_with_OTA_Updates/RTOS_APP/Motor_T/inc" -O0 -ffunction-sections -fdata-sections -Wall -fstack-usage -MMD -MP -MF"Core/Src/main.d" -MT"Core/Src/main.o" --specs=nano.specs -mfpu=fpv4-sp-d16 -mfloat-abi=hard -mthumb -o "Core/Src/main.o"
+../Core/Src/main.c: In function 'Adaptive':
+../Core/Src/main.c:658:49: warning: implicit declaration of function 'strlen' [-Wimplicit-function-declaration]
+  658 |    HAL_UART_Transmit(&huart1, (uint8_t*) temp2, strlen(temp2), 10);
+      |                                                 ^~~~~~
+../Core/Src/main.c:658:49: warning: incompatible implicit declaration of built-in function 'strlen'
+../Core/Src/main.c:29:1: note: include '<string.h>' or provide a declaration of 'strlen'
+   28 | #include "lane_detection.h"
+  +++ |+#include <string.h>
+   29 | /* USER CODE END Includes */
+../Core/Src/main.c: In function 'BlindSpot':
+../Core/Src/main.c:705:49: warning: incompatible implicit declaration of built-in function 'strlen'
+  705 |    HAL_UART_Transmit(&huart1, (uint8_t*) temp2, strlen(temp2), 10);
+      |                                                 ^~~~~~
+../Core/Src/main.c:705:49: note: include '<string.h>' or provide a declaration of 'strlen'
+../Core/Src/main.c: In function 'AutoPark':
+../Core/Src/main.c:737:49: warning: incompatible implicit declaration of built-in function 'strlen'
+  737 |    HAL_UART_Transmit(&huart1, (uint8_t*) temp2, strlen(temp2), 10);
+      |                                                 ^~~~~~
+../Core/Src/main.c:737:49: note: include '<string.h>' or provide a declaration of 'strlen'
+../Core/Src/main.c:753:5: warning: "/*" within comment [-Wcomment]
+  753 |     /*Do Nothing*/
+      |      
+arm-none-eabi-gcc -o "RTOS_APP.elf" @"objects.list"   -mcpu=cortex-m4 -T"C:\Users\Ziad\Desktop\NTI\GP\ADAS_with_OTA_Updates\RTOS_APP\STM32F429ZITX_FLASH.ld" --specs=nosys.specs -Wl,-Map="RTOS_APP.map" -Wl,--gc-sections -static --specs=nano.specs -mfpu=fpv4-sp-d16 -mfloat-abi=hard -mthumb -Wl,--start-group -lc -lm -Wl,--end-group
+Finished building target: RTOS_APP.elf
+ 
+arm-none-eabi-size   RTOS_APP.elf 
+arm-none-eabi-objdump -h -S  RTOS_APP.elf  > "RTOS_APP.list"
+arm-none-eabi-objcopy  -O ihex  RTOS_APP.elf  "RTOS_APP.hex"
+   text	   data	    bss	    dec	    hex	filename
+  36292	     24	  20800	  57116	   df1c	RTOS_APP.elf
+arm-none-eabi-objcopy  -O binary  RTOS_APP.elf  "RTOS_APP.bin"
+Finished building: default.size.stdout
+ 
+Finished building: RTOS_APP.hex
+Finished building: RTOS_APP.bin
+ 
+ 
+Finished building: RTOS_APP.list
+ 
+15:30:14 **** Incremental Build of configuration Debug for project RTOS_APP ****
+make -j4 all 
+arm-none-eabi-gcc "../Core/Src/main.c" -mcpu=cortex-m4 -std=gnu11 -g3 -DDEBUG -DUSE_HAL_DRIVER -DSTM32F429xx -c -I../Core/Inc -I../Drivers/STM32F4xx_HAL_Driver/Inc -I../Drivers/STM32F4xx_HAL_Driver/Inc/Legacy -I../Drivers/CMSIS/Device/ST/STM32F4xx/Include -I../Drivers/CMSIS/Include -I../Middlewares/Third_Party/FreeRTOS/Source/include -I../Middlewares/Third_Party/FreeRTOS/Source/portable/GCC/ARM_CM4F -I../Middlewares/Third_Party/FreeRTOS/Source/CMSIS_RTOS_V2 -I"C:/Users/Ziad/Desktop/NTI/GP/ADAS_with_OTA_Updates/RTOS_APP/IR_Sensor/inc" -I"C:/Users/Ziad/Desktop/NTI/GP/ADAS_with_OTA_Updates/RTOS_APP/Motor_T/inc" -O0 -ffunction-sections -fdata-sections -Wall -fstack-usage -MMD -MP -MF"Core/Src/main.d" -MT"Core/Src/main.o" --specs=nano.specs -mfpu=fpv4-sp-d16 -mfloat-abi=hard -mthumb -o "Core/Src/main.o"
+../Core/Src/main.c: In function 'Adaptive':
+../Core/Src/main.c:658:49: warning: implicit declaration of function 'strlen' [-Wimplicit-function-declaration]
+  658 |    HAL_UART_Transmit(&huart1, (uint8_t*) temp2, strlen(temp2), 10);
+      |                                                 ^~~~~~
+../Core/Src/main.c:658:49: warning: incompatible implicit declaration of built-in function 'strlen'
+../Core/Src/main.c:29:1: note: include '<string.h>' or provide a declaration of 'strlen'
+   28 | #include "lane_detection.h"
+  +++ |+#include <string.h>
+   29 | /* USER CODE END Includes */
+../Core/Src/main.c: In function 'BlindSpot':
+../Core/Src/main.c:705:49: warning: incompatible implicit declaration of built-in function 'strlen'
+  705 |    HAL_UART_Transmit(&huart1, (uint8_t*) temp2, strlen(temp2), 10);
+      |                                                 ^~~~~~
+../Core/Src/main.c:705:49: note: include '<string.h>' or provide a declaration of 'strlen'
+../Core/Src/main.c: In function 'AutoPark':
+../Core/Src/main.c:737:49: warning: incompatible implicit declaration of built-in function 'strlen'
+  737 |    HAL_UART_Transmit(&huart1, (uint8_t*) temp2, strlen(temp2), 10);
+      |                                                 ^~~~~~
+../Core/Src/main.c:737:49: note: include '<string.h>' or provide a declaration of 'strlen'
+../Core/Src/main.c:753:5: warning: "/*" within comment [-Wcomment]
+  753 |     /*Do Nothing*/
+      |      
+arm-none-eabi-gcc -o "RTOS_APP.elf" @"objects.list"   -mcpu=cortex-m4 -T"C:\Users\Ziad\Desktop\NTI\GP\ADAS_with_OTA_Updates\RTOS_APP\STM32F429ZITX_FLASH.ld" --specs=nosys.specs -Wl,-Map="RTOS_APP.map" -Wl,--gc-sections -static --specs=nano.specs -mfpu=fpv4-sp-d16 -mfloat-abi=hard -mthumb -Wl,--start-group -lc -lm -Wl,--end-group
+Finished building target: RTOS_APP.elf
+ 
+arm-none-eabi-size   RTOS_APP.elf 
+arm-none-eabi-objdump -h -S  RTOS_APP.elf  > "RTOS_APP.list"
+arm-none-eabi-objcopy  -O ihex  RTOS_APP.elf  "RTOS_APP.hex"
+   text	   data	    bss	    dec	    hex	filename
+  36292	     24	  20800	  57116	   df1c	RTOS_APP.elf
+arm-none-eabi-objcopy  -O binary  RTOS_APP.elf  "RTOS_APP.bin"
+Finished building: default.size.stdout
+ 
+Finished building: RTOS_APP.hex
+Finished building: RTOS_APP.bin
+ 
+ 
+Finished building: RTOS_APP.list
+ 
+15:33:11 **** Incremental Build of configuration Debug for project RTOS_APP ****
+make -j4 all 
+arm-none-eabi-gcc "../Core/Src/main.c" -mcpu=cortex-m4 -std=gnu11 -g3 -DDEBUG -DUSE_HAL_DRIVER -DSTM32F429xx -c -I../Core/Inc -I../Drivers/STM32F4xx_HAL_Driver/Inc -I../Drivers/STM32F4xx_HAL_Driver/Inc/Legacy -I../Drivers/CMSIS/Device/ST/STM32F4xx/Include -I../Drivers/CMSIS/Include -I../Middlewares/Third_Party/FreeRTOS/Source/include -I../Middlewares/Third_Party/FreeRTOS/Source/portable/GCC/ARM_CM4F -I../Middlewares/Third_Party/FreeRTOS/Source/CMSIS_RTOS_V2 -I"C:/Users/Ziad/Desktop/NTI/GP/ADAS_with_OTA_Updates/RTOS_APP/IR_Sensor/inc" -I"C:/Users/Ziad/Desktop/NTI/GP/ADAS_with_OTA_Updates/RTOS_APP/Motor_T/inc" -O0 -ffunction-sections -fdata-sections -Wall -fstack-usage -MMD -MP -MF"Core/Src/main.d" -MT"Core/Src/main.o" --specs=nano.specs -mfpu=fpv4-sp-d16 -mfloat-abi=hard -mthumb -o "Core/Src/main.o"
+../Core/Src/main.c: In function 'Adaptive':
+../Core/Src/main.c:658:49: warning: implicit declaration of function 'strlen' [-Wimplicit-function-declaration]
+  658 |    HAL_UART_Transmit(&huart1, (uint8_t*) temp2, strlen(temp2), 10);
+      |                                                 ^~~~~~
+../Core/Src/main.c:658:49: warning: incompatible implicit declaration of built-in function 'strlen'
+../Core/Src/main.c:29:1: note: include '<string.h>' or provide a declaration of 'strlen'
+   28 | #include "lane_detection.h"
+  +++ |+#include <string.h>
+   29 | /* USER CODE END Includes */
+../Core/Src/main.c: In function 'BlindSpot':
+../Core/Src/main.c:705:49: warning: incompatible implicit declaration of built-in function 'strlen'
+  705 |    HAL_UART_Transmit(&huart1, (uint8_t*) temp2, strlen(temp2), 10);
+      |                                                 ^~~~~~
+../Core/Src/main.c:705:49: note: include '<string.h>' or provide a declaration of 'strlen'
+../Core/Src/main.c: In function 'AutoPark':
+../Core/Src/main.c:732:23: error: invalid initializer
+  732 |  uint16_t Distance[4]=0;
+      |                       ^
+../Core/Src/main.c:737:49: warning: incompatible implicit declaration of built-in function 'strlen'
+  737 |    HAL_UART_Transmit(&huart1, (uint8_t*) temp2, strlen(temp2), 10);
+      |                                                 ^~~~~~
+../Core/Src/main.c:737:49: note: include '<string.h>' or provide a declaration of 'strlen'
+../Core/Src/main.c:753:5: warning: "/*" within comment [-Wcomment]
+  753 |     /*Do Nothing*/
+      |      
+make: *** [Core/Src/subdir.mk:49: Core/Src/main.o] Error 1
+"make -j4 all" terminated with exit code 2. Build might be incomplete.
+15:33:50 **** Incremental Build of configuration Debug for project RTOS_APP ****
+make -j4 all 
+arm-none-eabi-gcc "../Core/Src/main.c" -mcpu=cortex-m4 -std=gnu11 -g3 -DDEBUG -DUSE_HAL_DRIVER -DSTM32F429xx -c -I../Core/Inc -I../Drivers/STM32F4xx_HAL_Driver/Inc -I../Drivers/STM32F4xx_HAL_Driver/Inc/Legacy -I../Drivers/CMSIS/Device/ST/STM32F4xx/Include -I../Drivers/CMSIS/Include -I../Middlewares/Third_Party/FreeRTOS/Source/include -I../Middlewares/Third_Party/FreeRTOS/Source/portable/GCC/ARM_CM4F -I../Middlewares/Third_Party/FreeRTOS/Source/CMSIS_RTOS_V2 -I"C:/Users/Ziad/Desktop/NTI/GP/ADAS_with_OTA_Updates/RTOS_APP/IR_Sensor/inc" -I"C:/Users/Ziad/Desktop/NTI/GP/ADAS_with_OTA_Updates/RTOS_APP/Motor_T/inc" -O0 -ffunction-sections -fdata-sections -Wall -fstack-usage -MMD -MP -MF"Core/Src/main.d" -MT"Core/Src/main.o" --specs=nano.specs -mfpu=fpv4-sp-d16 -mfloat-abi=hard -mthumb -o "Core/Src/main.o"
+../Core/Src/main.c: In function 'Adaptive':
+../Core/Src/main.c:658:49: warning: implicit declaration of function 'strlen' [-Wimplicit-function-declaration]
+  658 |    HAL_UART_Transmit(&huart1, (uint8_t*) temp2, strlen(temp2), 10);
+      |                                                 ^~~~~~
+../Core/Src/main.c:658:49: warning: incompatible implicit declaration of built-in function 'strlen'
+../Core/Src/main.c:29:1: note: include '<string.h>' or provide a declaration of 'strlen'
+   28 | #include "lane_detection.h"
+  +++ |+#include <string.h>
+   29 | /* USER CODE END Includes */
+../Core/Src/main.c: In function 'BlindSpot':
+../Core/Src/main.c:705:49: warning: incompatible implicit declaration of built-in function 'strlen'
+  705 |    HAL_UART_Transmit(&huart1, (uint8_t*) temp2, strlen(temp2), 10);
+      |                                                 ^~~~~~
+../Core/Src/main.c:705:49: note: include '<string.h>' or provide a declaration of 'strlen'
+../Core/Src/main.c: In function 'AutoPark':
+../Core/Src/main.c:737:49: warning: incompatible implicit declaration of built-in function 'strlen'
+  737 |    HAL_UART_Transmit(&huart1, (uint8_t*) temp2, strlen(temp2), 10);
+      |                                                 ^~~~~~
+../Core/Src/main.c:737:49: note: include '<string.h>' or provide a declaration of 'strlen'
+../Core/Src/main.c:753:5: warning: "/*" within comment [-Wcomment]
+  753 |     /*Do Nothing*/
+      |      
+arm-none-eabi-gcc -o "RTOS_APP.elf" @"objects.list"   -mcpu=cortex-m4 -T"C:\Users\Ziad\Desktop\NTI\GP\ADAS_with_OTA_Updates\RTOS_APP\STM32F429ZITX_FLASH.ld" --specs=nosys.specs -Wl,-Map="RTOS_APP.map" -Wl,--gc-sections -static --specs=nano.specs -mfpu=fpv4-sp-d16 -mfloat-abi=hard -mthumb -Wl,--start-group -lc -lm -Wl,--end-group
+Finished building target: RTOS_APP.elf
+ 
+arm-none-eabi-size   RTOS_APP.elf 
+arm-none-eabi-objdump -h -S  RTOS_APP.elf  > "RTOS_APP.list"
+arm-none-eabi-objcopy  -O ihex  RTOS_APP.elf  "RTOS_APP.hex"
+   text	   data	    bss	    dec	    hex	filename
+  36308	     24	  20800	  57132	   df2c	RTOS_APP.elf
+arm-none-eabi-objcopy  -O binary  RTOS_APP.elf  "RTOS_APP.bin"
+Finished building: default.size.stdout
+ 
+Finished building: RTOS_APP.hex
+Finished building: RTOS_APP.bin
+ 
+ 
+Finished building: RTOS_APP.list
+ 
+15:35:31 **** Incremental Build of configuration Debug for project RTOS_APP ****
+make -j4 all 
+arm-none-eabi-size   RTOS_APP.elf 
+   text	   data	    bss	    dec	    hex	filename
+  36308	     24	  20800	  57132	   df2c	RTOS_APP.elf
+Finished building: default.size.stdout
+ 
+15:37:02 **** Incremental Build of configuration Debug for project RTOS_APP ****
+make -j4 all 
+arm-none-eabi-size   RTOS_APP.elf 
+   text	   data	    bss	    dec	    hex	filename
+  36308	     24	  20800	  57132	   df2c	RTOS_APP.elf
+Finished building: default.size.stdout
+ 
+15:37:07 **** Incremental Build of configuration Debug for project RTOS_APP ****
+make -j4 all 
+arm-none-eabi-size   RTOS_APP.elf 
+   text	   data	    bss	    dec	    hex	filename
+  36308	     24	  20800	  57132	   df2c	RTOS_APP.elf
+Finished building: default.size.stdout
+ 
+15:38:14 **** Incremental Build of configuration Debug for project RTOS_APP ****
+make -j4 all 
+arm-none-eabi-size   RTOS_APP.elf 
+   text	   data	    bss	    dec	    hex	filename
+  36308	     24	  20800	  57132	   df2c	RTOS_APP.elf
+Finished building: default.size.stdout
+ 
+15:41:59 **** Incremental Build of configuration Debug for project RTOS_APP ****
+make -j4 all 
+arm-none-eabi-gcc "../Core/Src/main.c" -mcpu=cortex-m4 -std=gnu11 -g3 -DDEBUG -DUSE_HAL_DRIVER -DSTM32F429xx -c -I../Core/Inc -I../Drivers/STM32F4xx_HAL_Driver/Inc -I../Drivers/STM32F4xx_HAL_Driver/Inc/Legacy -I../Drivers/CMSIS/Device/ST/STM32F4xx/Include -I../Drivers/CMSIS/Include -I../Middlewares/Third_Party/FreeRTOS/Source/include -I../Middlewares/Third_Party/FreeRTOS/Source/portable/GCC/ARM_CM4F -I../Middlewares/Third_Party/FreeRTOS/Source/CMSIS_RTOS_V2 -I"C:/Users/Ziad/Desktop/NTI/GP/ADAS_with_OTA_Updates/RTOS_APP/IR_Sensor/inc" -I"C:/Users/Ziad/Desktop/NTI/GP/ADAS_with_OTA_Updates/RTOS_APP/Motor_T/inc" -O0 -ffunction-sections -fdata-sections -Wall -fstack-usage -MMD -MP -MF"Core/Src/main.d" -MT"Core/Src/main.o" --specs=nano.specs -mfpu=fpv4-sp-d16 -mfloat-abi=hard -mthumb -o "Core/Src/main.o"
+../Core/Src/main.c: In function 'Adaptive':
+../Core/Src/main.c:658:49: warning: implicit declaration of function 'strlen' [-Wimplicit-function-declaration]
+  658 |    HAL_UART_Transmit(&huart1, (uint8_t*) temp2, strlen(temp2), 10);
+      |                                                 ^~~~~~
+../Core/Src/main.c:658:49: warning: incompatible implicit declaration of built-in function 'strlen'
+../Core/Src/main.c:29:1: note: include '<string.h>' or provide a declaration of 'strlen'
+   28 | #include "lane_detection.h"
+  +++ |+#include <string.h>
+   29 | /* USER CODE END Includes */
+../Core/Src/main.c: In function 'BlindSpot':
+../Core/Src/main.c:705:49: warning: incompatible implicit declaration of built-in function 'strlen'
+  705 |    HAL_UART_Transmit(&huart1, (uint8_t*) temp2, strlen(temp2), 10);
+      |                                                 ^~~~~~
+../Core/Src/main.c:705:49: note: include '<string.h>' or provide a declaration of 'strlen'
+../Core/Src/main.c: In function 'AutoPark':
+../Core/Src/main.c:737:49: warning: incompatible implicit declaration of built-in function 'strlen'
+  737 |    HAL_UART_Transmit(&huart1, (uint8_t*) temp2, strlen(temp2), 10);
+      |                                                 ^~~~~~
+../Core/Src/main.c:737:49: note: include '<string.h>' or provide a declaration of 'strlen'
+../Core/Src/main.c:753:5: warning: "/*" within comment [-Wcomment]
+  753 |     /*Do Nothing*/
+      |      
+arm-none-eabi-gcc -o "RTOS_APP.elf" @"objects.list"   -mcpu=cortex-m4 -T"C:\Users\Ziad\Desktop\NTI\GP\ADAS_with_OTA_Updates\RTOS_APP\STM32F429ZITX_FLASH.ld" --specs=nosys.specs -Wl,-Map="RTOS_APP.map" -Wl,--gc-sections -static --specs=nano.specs -mfpu=fpv4-sp-d16 -mfloat-abi=hard -mthumb -Wl,--start-group -lc -lm -Wl,--end-group
+Finished building target: RTOS_APP.elf
+ 
+arm-none-eabi-size   RTOS_APP.elf 
+arm-none-eabi-objdump -h -S  RTOS_APP.elf  > "RTOS_APP.list"
+arm-none-eabi-objcopy  -O ihex  RTOS_APP.elf  "RTOS_APP.hex"
+   text	   data	    bss	    dec	    hex	filename
+  36308	     24	  20800	  57132	   df2c	RTOS_APP.elf
+arm-none-eabi-objcopy  -O binary  RTOS_APP.elf  "RTOS_APP.bin"
+Finished building: default.size.stdout
+ 
+Finished building: RTOS_APP.hex
+Finished building: RTOS_APP.bin
+ 
+ 
+Finished building: RTOS_APP.list
+ 
+15:43:22 **** Incremental Build of configuration Debug for project RTOS_APP ****
+make -j4 all 
+arm-none-eabi-size   RTOS_APP.elf 
+   text	   data	    bss	    dec	    hex	filename
+  36308	     24	  20800	  57132	   df2c	RTOS_APP.elf
+Finished building: default.size.stdout
+ 
+15:43:24 **** Incremental Build of configuration Debug for project RTOS_APP ****
+make -j4 all 
+arm-none-eabi-size   RTOS_APP.elf 
+   text	   data	    bss	    dec	    hex	filename
+  36308	     24	  20800	  57132	   df2c	RTOS_APP.elf
+Finished building: default.size.stdout
+ 
+15:43:29 **** Incremental Build of configuration Debug for project RTOS_APP ****
+make -j4 all 
+arm-none-eabi-size   RTOS_APP.elf 
+   text	   data	    bss	    dec	    hex	filename
+  36308	     24	  20800	  57132	   df2c	RTOS_APP.elf
+Finished building: default.size.stdout
+ 
+15:44:58 **** Incremental Build of configuration Debug for project RTOS_APP ****
+make -j4 all 
+arm-none-eabi-gcc "../Core/Src/main.c" -mcpu=cortex-m4 -std=gnu11 -g3 -DDEBUG -DUSE_HAL_DRIVER -DSTM32F429xx -c -I../Core/Inc -I../Drivers/STM32F4xx_HAL_Driver/Inc -I../Drivers/STM32F4xx_HAL_Driver/Inc/Legacy -I../Drivers/CMSIS/Device/ST/STM32F4xx/Include -I../Drivers/CMSIS/Include -I../Middlewares/Third_Party/FreeRTOS/Source/include -I../Middlewares/Third_Party/FreeRTOS/Source/portable/GCC/ARM_CM4F -I../Middlewares/Third_Party/FreeRTOS/Source/CMSIS_RTOS_V2 -I"C:/Users/Ziad/Desktop/NTI/GP/ADAS_with_OTA_Updates/RTOS_APP/IR_Sensor/inc" -I"C:/Users/Ziad/Desktop/NTI/GP/ADAS_with_OTA_Updates/RTOS_APP/Motor_T/inc" -O0 -ffunction-sections -fdata-sections -Wall -fstack-usage -MMD -MP -MF"Core/Src/main.d" -MT"Core/Src/main.o" --specs=nano.specs -mfpu=fpv4-sp-d16 -mfloat-abi=hard -mthumb -o "Core/Src/main.o"
+../Core/Src/main.c: In function 'Adaptive':
+../Core/Src/main.c:658:49: warning: implicit declaration of function 'strlen' [-Wimplicit-function-declaration]
+  658 |    HAL_UART_Transmit(&huart1, (uint8_t*) temp2, strlen(temp2), 10);
+      |                                                 ^~~~~~
+../Core/Src/main.c:658:49: warning: incompatible implicit declaration of built-in function 'strlen'
+../Core/Src/main.c:29:1: note: include '<string.h>' or provide a declaration of 'strlen'
+   28 | #include "lane_detection.h"
+  +++ |+#include <string.h>
+   29 | /* USER CODE END Includes */
+../Core/Src/main.c: In function 'BlindSpot':
+../Core/Src/main.c:705:49: warning: incompatible implicit declaration of built-in function 'strlen'
+  705 |    HAL_UART_Transmit(&huart1, (uint8_t*) temp2, strlen(temp2), 10);
+      |                                                 ^~~~~~
+../Core/Src/main.c:705:49: note: include '<string.h>' or provide a declaration of 'strlen'
+../Core/Src/main.c: In function 'AutoPark':
+../Core/Src/main.c:737:49: warning: incompatible implicit declaration of built-in function 'strlen'
+  737 |    HAL_UART_Transmit(&huart1, (uint8_t*) temp2, strlen(temp2), 10);
+      |                                                 ^~~~~~
+../Core/Src/main.c:737:49: note: include '<string.h>' or provide a declaration of 'strlen'
+../Core/Src/main.c:753:5: warning: "/*" within comment [-Wcomment]
+  753 |     /*Do Nothing*/
+      |      
+arm-none-eabi-gcc -o "RTOS_APP.elf" @"objects.list"   -mcpu=cortex-m4 -T"C:\Users\Ziad\Desktop\NTI\GP\ADAS_with_OTA_Updates\RTOS_APP\STM32F429ZITX_FLASH.ld" --specs=nosys.specs -Wl,-Map="RTOS_APP.map" -Wl,--gc-sections -static --specs=nano.specs -mfpu=fpv4-sp-d16 -mfloat-abi=hard -mthumb -Wl,--start-group -lc -lm -Wl,--end-group
+Finished building target: RTOS_APP.elf
+ 
+arm-none-eabi-size   RTOS_APP.elf 
+arm-none-eabi-objdump -h -S  RTOS_APP.elf  > "RTOS_APP.list"
+arm-none-eabi-objcopy  -O ihex  RTOS_APP.elf  "RTOS_APP.hex"
+   text	   data	    bss	    dec	    hex	filename
+  36292	     24	  20800	  57116	   df1c	RTOS_APP.elf
+arm-none-eabi-objcopy  -O binary  RTOS_APP.elf  "RTOS_APP.bin"
+Finished building: default.size.stdout
+ 
+Finished building: RTOS_APP.bin
+Finished building: RTOS_APP.hex
+ 
+ 
+Finished building: RTOS_APP.list
+ 
+15:45:51 **** Incremental Build of configuration Debug for project RTOS_APP ****
+make -j4 all 
+arm-none-eabi-size   RTOS_APP.elf 
+   text	   data	    bss	    dec	    hex	filename
+  36292	     24	  20800	  57116	   df1c	RTOS_APP.elf
+Finished building: default.size.stdout
+ 
+15:49:42 **** Incremental Build of configuration Debug for project RTOS_APP ****
+make -j4 all 
+arm-none-eabi-gcc "../Core/Src/main.c" -mcpu=cortex-m4 -std=gnu11 -g3 -DDEBUG -DUSE_HAL_DRIVER -DSTM32F429xx -c -I../Core/Inc -I../Drivers/STM32F4xx_HAL_Driver/Inc -I../Drivers/STM32F4xx_HAL_Driver/Inc/Legacy -I../Drivers/CMSIS/Device/ST/STM32F4xx/Include -I../Drivers/CMSIS/Include -I../Middlewares/Third_Party/FreeRTOS/Source/include -I../Middlewares/Third_Party/FreeRTOS/Source/portable/GCC/ARM_CM4F -I../Middlewares/Third_Party/FreeRTOS/Source/CMSIS_RTOS_V2 -I"C:/Users/Ziad/Desktop/NTI/GP/ADAS_with_OTA_Updates/RTOS_APP/IR_Sensor/inc" -I"C:/Users/Ziad/Desktop/NTI/GP/ADAS_with_OTA_Updates/RTOS_APP/Motor_T/inc" -O0 -ffunction-sections -fdata-sections -Wall -fstack-usage -MMD -MP -MF"Core/Src/main.d" -MT"Core/Src/main.o" --specs=nano.specs -mfpu=fpv4-sp-d16 -mfloat-abi=hard -mthumb -o "Core/Src/main.o"
+../Core/Src/main.c: In function 'Adaptive':
+../Core/Src/main.c:658:49: warning: implicit declaration of function 'strlen' [-Wimplicit-function-declaration]
+  658 |    HAL_UART_Transmit(&huart1, (uint8_t*) temp2, strlen(temp2), 10);
+      |                                                 ^~~~~~
+../Core/Src/main.c:658:49: warning: incompatible implicit declaration of built-in function 'strlen'
+../Core/Src/main.c:29:1: note: include '<string.h>' or provide a declaration of 'strlen'
+   28 | #include "lane_detection.h"
+  +++ |+#include <string.h>
+   29 | /* USER CODE END Includes */
+../Core/Src/main.c: In function 'BlindSpot':
+../Core/Src/main.c:705:49: warning: incompatible implicit declaration of built-in function 'strlen'
+  705 |    HAL_UART_Transmit(&huart1, (uint8_t*) temp2, strlen(temp2), 10);
+      |                                                 ^~~~~~
+../Core/Src/main.c:705:49: note: include '<string.h>' or provide a declaration of 'strlen'
+../Core/Src/main.c: In function 'AutoPark':
+../Core/Src/main.c:737:49: warning: incompatible implicit declaration of built-in function 'strlen'
+  737 |    HAL_UART_Transmit(&huart1, (uint8_t*) temp2, strlen(temp2), 10);
+      |                                                 ^~~~~~
+../Core/Src/main.c:737:49: note: include '<string.h>' or provide a declaration of 'strlen'
+../Core/Src/main.c:753:5: warning: "/*" within comment [-Wcomment]
+  753 |     /*Do Nothing*/
+      |      
+arm-none-eabi-gcc -o "RTOS_APP.elf" @"objects.list"   -mcpu=cortex-m4 -T"C:\Users\Ziad\Desktop\NTI\GP\ADAS_with_OTA_Updates\RTOS_APP\STM32F429ZITX_FLASH.ld" --specs=nosys.specs -Wl,-Map="RTOS_APP.map" -Wl,--gc-sections -static --specs=nano.specs -mfpu=fpv4-sp-d16 -mfloat-abi=hard -mthumb -Wl,--start-group -lc -lm -Wl,--end-group
+Finished building target: RTOS_APP.elf
+ 
+arm-none-eabi-size   RTOS_APP.elf 
+arm-none-eabi-objdump -h -S  RTOS_APP.elf  > "RTOS_APP.list"
+arm-none-eabi-objcopy  -O ihex  RTOS_APP.elf  "RTOS_APP.hex"
+   text	   data	    bss	    dec	    hex	filename
+  36292	     24	  20800	  57116	   df1c	RTOS_APP.elf
+arm-none-eabi-objcopy  -O binary  RTOS_APP.elf  "RTOS_APP.bin"
+Finished building: default.size.stdout
+ 
+Finished building: RTOS_APP.hex
+Finished building: RTOS_APP.bin
+ 
+ 
+Finished building: RTOS_APP.list
  
