@@ -12,105 +12,83 @@
 
 Obstacle_Status_Type BlindSpot_Enum_Check ( BlindSpot_Side_Type side )
 {
-   Obstacle_Status_Type Obstacle_Status_Var = OBSTABCLE_NOT_EXIST ; // Enum obj  to check obstacle exists in it.
+	Obstacle_Status_Type Obstacle_Status_Var = OBSTABCLE_NOT_EXIST; // Enum obj to check if an obstacle exists.
 
-   uint16_t Distance_Measured1 ;     // Local Variable to Get Distance using ULTRASONIC in it .
-   uint16_t Distance_Measured2 ;     // Local Variable to Get Distance using ULTRASONIC in it .
+	uint16_t Distances[4] = {0}; // Array to store distances from the ultrasonic sensors.
 
-    switch (side)  // Switching if i will work on Right or Left side this time or this check.
-    {
+	switch (side) // Switching if I will work on the Right or Left side this time or this check.
+	{
+	case RIGHT_SIDE:
 
-    case RIGHT_SIDE :
+	    while (UltraSonic_ReadStatusENUM_GetRead(ULTRASONIC1, Distances, 1) != READ_EXIST)  // Read from Ultrasonic1
+	    {
+	        // Continue looping until a valid reading is obtained.
+	    }
 
-    	if( UltraSonic_ReadStatusENUM_GetRead( ULTRASONIC1 , & Distance_Measured1, &Distance_Measured2) == READ_EXIST ) // Low el Ultra Sonic ba3at 2eraya s3etha htcheck 3leha , L3 stands for choosing Ultrasonic 3 .
-        {
-        	//printf("Distance : %d \r\n",Distance_Measured);
-           if ( Distance_Measured1 <= NEAREST_UNSEEN_DISTANCE_OF_BLIND_SPOT_REGION )  // check distance
-            {
-        	   HAL_GPIO_WritePin(LED_INDICATOR_OF_BLINDSPOT_OBSTACLE_EXISTS_RIGHT_PORT, LED_INDICATOR_OF_BLINDSPOT_OBSTACLE_EXISTS_RIGHT_PIN , GPIO_PIN_SET ); // Turn on Indication Right LED.
-               Obstacle_Status_Var = OBSTACLE_EXIST ; // keda fe obstacle right side , fa b3dl el obj eli h3mlo return.
-            }
-            else
-            {
-            	HAL_GPIO_WritePin(LED_INDICATOR_OF_BLINDSPOT_OBSTACLE_EXISTS_RIGHT_PORT, LED_INDICATOR_OF_BLINDSPOT_OBSTACLE_EXISTS_RIGHT_PIN , GPIO_PIN_RESET );  // Turn off Indication Right LED.
-            }
-        }
-        else
-        {
+	    if (Distances[0] <= NEAREST_UNSEEN_DISTANCE_OF_BLIND_SPOT_REGION)
+	    {
+	        HAL_GPIO_WritePin(LED_INDICATOR_OF_BLINDSPOT_OBSTACLE_EXISTS_RIGHT_PORT, LED_INDICATOR_OF_BLINDSPOT_OBSTACLE_EXISTS_RIGHT_PIN, GPIO_PIN_SET); // Turn on Indication Right LED.
+	        Obstacle_Status_Var = OBSTACLE_EXIST;                                                           // There is an obstacle on the right side.
+	    }
+	    else
+	    {
+	        HAL_GPIO_WritePin(LED_INDICATOR_OF_BLINDSPOT_OBSTACLE_EXISTS_RIGHT_PORT, LED_INDICATOR_OF_BLINDSPOT_OBSTACLE_EXISTS_RIGHT_PIN, GPIO_PIN_RESET); // Turn off Indication Right LED.
+	    }
 
-        	//HAL_GPIO_WritePin(LED_INDICATOR_OF_BLINDSPOT_OBSTACLE_EXISTS_RIGHT_PORT, LED_INDICATOR_OF_BLINDSPOT_OBSTACLE_EXISTS_RIGHT_PIN , GPIO_PIN_RESET ) ;  // Turn off Indication Right LED.
-            // in this case , no read exist , therefore there is no obstacle in this way , neither in blind spot region or not.
-        }
+	    break;
 
-        break;
+	case LEFT_SIDE:
 
-    case LEFT_SIDE :
+	    while (UltraSonic_ReadStatusENUM_GetRead(ULTRASONIC2, Distances, 1) != READ_EXIST)  // Read from Ultrasonic2
+	    {
+	        // Continue looping until a valid reading is obtained.
+	    }
 
-    	if( UltraSonic_ReadStatusENUM_GetRead( ULTRASONIC2 , & Distance_Measured1, &Distance_Measured2) == READ_EXIST ) // Low el Ultra Sonic ba3at 2eraya s3etha htcheck 3leha , L4 stands for choosing Ultrasonic 4 .
-        {
-            if ( Distance_Measured1 <= NEAREST_UNSEEN_DISTANCE_OF_BLIND_SPOT_REGION )
-            {
-            	HAL_GPIO_WritePin(LED_INDICATOR_OF_BLINDSPOT_OBSTACLE_EXISTS_LEFT_PORT, LED_INDICATOR_OF_BLINDSPOT_OBSTACLE_EXISTS_LEFT_PIN , GPIO_PIN_SET ); // Turn on Indication LEFT LED.
-                Obstacle_Status_Var = OBSTACLE_EXIST ; // keda fe obstacle right side , fa b3dl el obj eli h3mlo return.
-            }
-            else
-            {
-            	HAL_GPIO_WritePin(LED_INDICATOR_OF_BLINDSPOT_OBSTACLE_EXISTS_LEFT_PORT, LED_INDICATOR_OF_BLINDSPOT_OBSTACLE_EXISTS_LEFT_PIN , GPIO_PIN_RESET ); // Turn off Indication LEFT LED.
-            }
-        }
+	    if (Distances[0] <= NEAREST_UNSEEN_DISTANCE_OF_BLIND_SPOT_REGION)
+	    {
+	        HAL_GPIO_WritePin(LED_INDICATOR_OF_BLINDSPOT_OBSTACLE_EXISTS_LEFT_PORT, LED_INDICATOR_OF_BLINDSPOT_OBSTACLE_EXISTS_LEFT_PIN, GPIO_PIN_SET); // Turn on Indication Left LED.
+	        Obstacle_Status_Var = OBSTACLE_EXIST;                                                          // There is an obstacle on the left side.
+	    }
+	    else
+	    {
+	        HAL_GPIO_WritePin(LED_INDICATOR_OF_BLINDSPOT_OBSTACLE_EXISTS_LEFT_PORT, LED_INDICATOR_OF_BLINDSPOT_OBSTACLE_EXISTS_LEFT_PIN, GPIO_PIN_RESET); // Turn off Indication Left LED.
+	    }
 
-          else
+	    break;
 
-        {
-        	// HAL_GPIO_WritePin(LED_INDICATOR_OF_BLINDSPOT_OBSTACLE_EXISTS_LEFT_PORT, LED_INDICATOR_OF_BLINDSPOT_OBSTACLE_EXISTS_LEFT_PIN , GPIO_PIN_RESET ) ; // Turn off Indication LEFT LED.
+	case BOTH_SIDES:
 
-            // in this case , no read exist , therefore there is no obstacle in this way , neither in blind spot region or not.
-        }
+	    while (UltraSonic_ReadStatusENUM_GetRead(ULTRASONIC1_2, Distances, 2) != READ_EXIST)  // Read from Ultrasonic1 and Ultrasonic2
+	    {
+	        // Continue looping until a valid reading is obtained.
+	    }
 
-        break;
+	    if (Distances[0] <= NEAREST_UNSEEN_DISTANCE_OF_BLIND_SPOT_REGION)
+	    {
+	        HAL_GPIO_WritePin(LED_INDICATOR_OF_BLINDSPOT_OBSTACLE_EXISTS_LEFT_PORT, LED_INDICATOR_OF_BLINDSPOT_OBSTACLE_EXISTS_LEFT_PIN, GPIO_PIN_SET); // Turn on Indication Left LED.
+	        Obstacle_Status_Var = OBSTACLE_EXIST;                                                          // There is an obstacle on the left side.
+	    }
+	    else
+	    {
+	        HAL_GPIO_WritePin(LED_INDICATOR_OF_BLINDSPOT_OBSTACLE_EXISTS_LEFT_PORT, LED_INDICATOR_OF_BLINDSPOT_OBSTACLE_EXISTS_LEFT_PIN, GPIO_PIN_RESET); // Turn off Indication Left LED.
+	    }
 
-    case BOTH_SIDES:
+	    if (Distances[1] <= NEAREST_UNSEEN_DISTANCE_OF_BLIND_SPOT_REGION)
+	    {
+	        HAL_GPIO_WritePin(LED_INDICATOR_OF_BLINDSPOT_OBSTACLE_EXISTS_RIGHT_PORT, LED_INDICATOR_OF_BLINDSPOT_OBSTACLE_EXISTS_RIGHT_PIN, GPIO_PIN_SET); // Turn on Indication Right LED.
+	        Obstacle_Status_Var = OBSTACLE_EXIST;                                                           // There is an obstacle on the right side.
+	    }
+	    else
+	    {
+	        HAL_GPIO_WritePin(LED_INDICATOR_OF_BLINDSPOT_OBSTACLE_EXISTS_RIGHT_PORT, LED_INDICATOR_OF_BLINDSPOT_OBSTACLE_EXISTS_RIGHT_PIN, GPIO_PIN_RESET); // Turn off Indication Right LED.
+	    }
 
-         if( UltraSonic_ReadStatusENUM_GetRead( ULTRASONIC1_2 , & Distance_Measured1, &Distance_Measured2) == READ_EXIST ) // Low el Ultra Sonic ba3at 2eraya s3etha htcheck 3leha , L4 stands for choosing Ultrasonic 4 .
-        {
-            if ( Distance_Measured1 <= NEAREST_UNSEEN_DISTANCE_OF_BLIND_SPOT_REGION )
-            {
-            	HAL_GPIO_WritePin(LED_INDICATOR_OF_BLINDSPOT_OBSTACLE_EXISTS_LEFT_PORT, LED_INDICATOR_OF_BLINDSPOT_OBSTACLE_EXISTS_LEFT_PIN , GPIO_PIN_SET ); // Turn on Indication LEFT LED.
-                Obstacle_Status_Var = OBSTACLE_EXIST ; // keda fe obstacle right side , fa b3dl el obj eli h3mlo return.
-            }
-            else
-            {
-            	HAL_GPIO_WritePin(LED_INDICATOR_OF_BLINDSPOT_OBSTACLE_EXISTS_LEFT_PORT, LED_INDICATOR_OF_BLINDSPOT_OBSTACLE_EXISTS_LEFT_PIN , GPIO_PIN_RESET ); // Turn off Indication LEFT LED.
-            }
+	    break;
 
-            if ( Distance_Measured2 <= NEAREST_UNSEEN_DISTANCE_OF_BLIND_SPOT_REGION )
-            {
-            	HAL_GPIO_WritePin(LED_INDICATOR_OF_BLINDSPOT_OBSTACLE_EXISTS_RIGHT_PORT, LED_INDICATOR_OF_BLINDSPOT_OBSTACLE_EXISTS_RIGHT_PIN , GPIO_PIN_SET ); // Turn on Indication LEFT LED.
-                Obstacle_Status_Var = OBSTACLE_EXIST ; // keda fe obstacle right side , fa b3dl el obj eli h3mlo return.
-            }
-            else
-            {
-            	HAL_GPIO_WritePin(LED_INDICATOR_OF_BLINDSPOT_OBSTACLE_EXISTS_RIGHT_PORT, LED_INDICATOR_OF_BLINDSPOT_OBSTACLE_EXISTS_RIGHT_PIN , GPIO_PIN_RESET ); // Turn off Indication LEFT LED.
-            }
-        }
+	default:
+	    break;
+	}
 
-          else
+	return Obstacle_Status_Var;
 
-        {
-        	//  HAL_GPIO_WritePin(LED_INDICATOR_OF_BLINDSPOT_OBSTACLE_EXISTS_LEFT_PORT, LED_INDICATOR_OF_BLINDSPOT_OBSTACLE_EXISTS_LEFT_PIN , GPIO_PIN_RESET ) ; // Turn off Indication LEFT LED.
-        	//  HAL_GPIO_WritePin(LED_INDICATOR_OF_BLINDSPOT_OBSTACLE_EXISTS_RIGHT_PORT, LED_INDICATOR_OF_BLINDSPOT_OBSTACLE_EXISTS_RIGHT_PIN , GPIO_PIN_RESET ) ; // Turn off Indication LEFT LED.
-
-            // in this case , no read exist , therefore there is no obstacle in this way , neither in blind spot region or not.
-        }
-
-        break;
-
-    default :
-
-    	break;
-
-
-    }
-
-    return Obstacle_Status_Var ;
 }

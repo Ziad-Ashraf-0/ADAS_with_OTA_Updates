@@ -22,6 +22,7 @@
 
 /* Private includes ----------------------------------------------------------*/
 /* USER CODE BEGIN Includes */
+#include <string.h>
 #include "Blind_Spot.h"
 #include "UltraSonic.h"
 #include "Motor_Interfce.h"
@@ -650,28 +651,31 @@ void StartDefaultTask(void *argument)
 void Adaptive(void *argument)
 {
   /* USER CODE BEGIN Adaptive */
-	/* Infinite loop */
+
 	char temp2[] = "Adaptive \r\n";
-	uint16_t distance;
+
+	uint16_t Distances[4] = {0}; // Array to store distances from the ultrasonic sensors.
+
+	/* Infinite loop */
 	for (;;) {
 		if (task_flag == 'a') {
 			HAL_UART_Transmit(&huart1, (uint8_t*) temp2, strlen(temp2), 10);
 
-			if (UltraSonic_ReadStatusENUM_GetRead(ULTRASONIC3, &distance, &distance)
+			if (UltraSonic_ReadStatusENUM_GetRead(ULTRASONIC3, Distances, 1)
 					== READ_EXIST) {
-				if (distance >= 15) {
+				if (Distances[0] >= 15) {
 					//Lane_Runnable();
 					Car_Void_GoForward(100);
 					//printf("Distance: %d \r\n", distance);
 					//printf("PWM: %d \r\n",htim2.Instance->CCR1);
 				}
 
-				else if (distance < 15) {
-					if (distance > 10) {
+				else if (Distances[0] < 15) {
+					if (Distances[0] > 10) {
 						Car_Void_GoForward(50);
 						//printf("Distance: %d \r\n", distance);
 						//printf("PWM: %d \r\n",htim2.Instance->CCR1);
-					} else if (distance < 10) {
+					} else if (Distances[0] < 10) {
 						Car_Void_Stop();
 						//printf("Distance: %d \r\n", distance);
 						//printf("PWM: %d \r\n",htim2.Instance->CCR1);
@@ -729,7 +733,7 @@ void AutoPark(void *argument)
 	/* Infinite loop */
 	char temp2[] = "AutoPark \r\n";
 	char flag = 0;
-	uint16_t Distance[4];
+	uint16_t Distances[4] = {0}; // Array to store distances from the ultrasonic sensors.
 	for (;;)
 	{
 		if (task_flag == 'b')
@@ -756,20 +760,22 @@ void AutoPark(void *argument)
 			if(flag == 0){
 
 				/*Find Spot*/
-						while((UltraSonic_ReadStatusENUM_GetRead(ULTRASONIC1,&Distance[0],&Distance[0])) == NO_READ);
-						while(Distance[0] <= MIN_DISTANCE_TO_BE_IN_PARKING_LANE)
+						while((UltraSonic_ReadStatusENUM_GetRead(ULTRASONIC1, Distances, 1)) != READ_EXIST);
+
+						while(Distances[0] <= MIN_DISTANCE_TO_BE_IN_PARKING_LANE)
 						{
 							Car_Void_GoForward(50);
-							while((UltraSonic_ReadStatusENUM_GetRead(ULTRASONIC1,&Distance[0],&Distance[0])) == NO_READ);
+							while((UltraSonic_ReadStatusENUM_GetRead(ULTRASONIC1, Distances, 1)) != READ_EXIST);
 						}
 						HAL_Delay(2000);
 
 						/*Check the spot is going to fit the car*/
-						while((UltraSonic_ReadStatusENUM_GetRead(ULTRASONIC1,&Distance[0],&Distance[0])) == NO_READ);
-						while(Distance[0] > MIN_DISTANCE_TO_BE_IN_PARKING_LANE)
+						while((UltraSonic_ReadStatusENUM_GetRead(ULTRASONIC1, Distances, 1)) != READ_EXIST);
+
+						while(Distances[0] > MIN_DISTANCE_TO_BE_IN_PARKING_LANE)
 						{
 							Car_Void_GoForward(50);
-							while((UltraSonic_ReadStatusENUM_GetRead(ULTRASONIC1,&Distance[0],&Distance[0])) == NO_READ);
+							while((UltraSonic_ReadStatusENUM_GetRead(ULTRASONIC1, Distances, 1)) != READ_EXIST);
 						}
 
 						Car_Void_Stop();

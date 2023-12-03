@@ -61,7 +61,7 @@ typedef enum{
 
 
 
-Read_Status UltraSonic_ReadStatusENUM_GetRead( Ultra_Sonic_Type Ultra_Sonic , uint16_t * distance1,  uint16_t * distance2);
+Read_Status UltraSonic_ReadStatusENUM_GetRead(Ultra_Sonic_Type Ultra_Sonic, uint16_t distances[], size_t numDistances);
 
 
 
