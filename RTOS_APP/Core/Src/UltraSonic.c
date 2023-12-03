@@ -30,7 +30,6 @@ uint32_t Difference_CH4 = 0;
 uint8_t Is_First_Captured_CH4 = 0;
 uint8_t Distance_CH4 = 0;
 
-
 static void UltraSonic_void_Init(Ultra_Sonic_Type Ultra_Sonic) {
 	//This Function Just for Initiate the Trigger
 
@@ -38,53 +37,73 @@ static void UltraSonic_void_Init(Ultra_Sonic_Type Ultra_Sonic) {
 
 	switch (Ultra_Sonic) {
 	case ULTRASONIC1:
-		HAL_GPIO_WritePin(ULTRA_SONIC1_TRIG_PORT, ULTRA_SONIC1_TRIG, GPIO_PIN_SET);
+		HAL_GPIO_WritePin(ULTRA_SONIC1_TRIG_PORT, ULTRA_SONIC1_TRIG,
+				GPIO_PIN_SET);
 		HAL_Delay(1);
-		HAL_GPIO_WritePin(ULTRA_SONIC1_TRIG_PORT, ULTRA_SONIC1_TRIG, GPIO_PIN_RESET);
+		HAL_GPIO_WritePin(ULTRA_SONIC1_TRIG_PORT, ULTRA_SONIC1_TRIG,
+				GPIO_PIN_RESET);
 		__HAL_TIM_ENABLE_IT(&htim1, TIM_IT_CC1);
 		break;
 
 	case ULTRASONIC2:
-		HAL_GPIO_WritePin(ULTRA_SONIC2_TRIG_PORT, ULTRA_SONIC2_TRIG, GPIO_PIN_SET);
+		HAL_GPIO_WritePin(ULTRA_SONIC2_TRIG_PORT, ULTRA_SONIC2_TRIG,
+				GPIO_PIN_SET);
 		HAL_Delay(1);
-		HAL_GPIO_WritePin(ULTRA_SONIC2_TRIG_PORT, ULTRA_SONIC2_TRIG, GPIO_PIN_RESET);
+		HAL_GPIO_WritePin(ULTRA_SONIC2_TRIG_PORT, ULTRA_SONIC2_TRIG,
+				GPIO_PIN_RESET);
 		__HAL_TIM_ENABLE_IT(&htim1, TIM_IT_CC2);
 		break;
 
 	case ULTRASONIC3:
-		HAL_GPIO_WritePin(ULTRA_SONIC3_TRIG_PORT, ULTRA_SONIC3_TRIG, GPIO_PIN_SET);
+		HAL_GPIO_WritePin(ULTRA_SONIC3_TRIG_PORT, ULTRA_SONIC3_TRIG,
+				GPIO_PIN_SET);
 		HAL_Delay(1);
-		HAL_GPIO_WritePin(ULTRA_SONIC3_TRIG_PORT, ULTRA_SONIC3_TRIG, GPIO_PIN_RESET);
+		HAL_GPIO_WritePin(ULTRA_SONIC3_TRIG_PORT, ULTRA_SONIC3_TRIG,
+				GPIO_PIN_RESET);
 		__HAL_TIM_ENABLE_IT(&htim1, TIM_IT_CC3);
 		break;
 
 	case ULTRASONIC4:
-		HAL_GPIO_WritePin(ULTRA_SONIC4_TRIG_PORT, ULTRA_SONIC4_TRIG, GPIO_PIN_SET);
+		HAL_GPIO_WritePin(ULTRA_SONIC4_TRIG_PORT, ULTRA_SONIC4_TRIG,
+				GPIO_PIN_SET);
 		HAL_Delay(1);
-		HAL_GPIO_WritePin(ULTRA_SONIC4_TRIG_PORT, ULTRA_SONIC4_TRIG, GPIO_PIN_RESET);
+		HAL_GPIO_WritePin(ULTRA_SONIC4_TRIG_PORT, ULTRA_SONIC4_TRIG,
+				GPIO_PIN_RESET);
 		__HAL_TIM_ENABLE_IT(&htim1, TIM_IT_CC4);
 		break;
 
 	case ULTRASONIC1_2:
-		HAL_GPIO_WritePin(ULTRA_SONIC1_TRIG_PORT, ULTRA_SONIC1_TRIG, GPIO_PIN_SET);
-		HAL_GPIO_WritePin(ULTRA_SONIC2_TRIG_PORT, ULTRA_SONIC2_TRIG, GPIO_PIN_SET);
+		HAL_GPIO_WritePin(ULTRA_SONIC1_TRIG_PORT, ULTRA_SONIC1_TRIG,
+				GPIO_PIN_SET);
+		HAL_GPIO_WritePin(ULTRA_SONIC2_TRIG_PORT, ULTRA_SONIC2_TRIG,
+				GPIO_PIN_SET);
 		HAL_Delay(1);
-		HAL_GPIO_WritePin(ULTRA_SONIC1_TRIG_PORT, ULTRA_SONIC1_TRIG, GPIO_PIN_RESET);
-		HAL_GPIO_WritePin(ULTRA_SONIC2_TRIG_PORT, ULTRA_SONIC2_TRIG, GPIO_PIN_RESET);
+		HAL_GPIO_WritePin(ULTRA_SONIC1_TRIG_PORT, ULTRA_SONIC1_TRIG,
+				GPIO_PIN_RESET);
+		HAL_GPIO_WritePin(ULTRA_SONIC2_TRIG_PORT, ULTRA_SONIC2_TRIG,
+				GPIO_PIN_RESET);
 		__HAL_TIM_ENABLE_IT(&htim1, TIM_IT_CC2);
 		__HAL_TIM_ENABLE_IT(&htim1, TIM_IT_CC1);
 		break;
 
 	case TOTAL_ULTRA_SONIC:
-		HAL_GPIO_WritePin(ULTRA_SONIC1_TRIG_PORT, ULTRA_SONIC1_TRIG, GPIO_PIN_SET);
-		HAL_GPIO_WritePin(ULTRA_SONIC2_TRIG_PORT, ULTRA_SONIC2_TRIG, GPIO_PIN_SET);
-		HAL_GPIO_WritePin(ULTRA_SONIC3_TRIG_PORT, ULTRA_SONIC3_TRIG, GPIO_PIN_SET);
-		HAL_GPIO_WritePin(ULTRA_SONIC4_TRIG_PORT, ULTRA_SONIC4_TRIG, GPIO_PIN_SET);
+		HAL_GPIO_WritePin(ULTRA_SONIC1_TRIG_PORT, ULTRA_SONIC1_TRIG,
+				GPIO_PIN_SET);
+		HAL_GPIO_WritePin(ULTRA_SONIC2_TRIG_PORT, ULTRA_SONIC2_TRIG,
+				GPIO_PIN_SET);
+		HAL_GPIO_WritePin(ULTRA_SONIC3_TRIG_PORT, ULTRA_SONIC3_TRIG,
+				GPIO_PIN_SET);
+		HAL_GPIO_WritePin(ULTRA_SONIC4_TRIG_PORT, ULTRA_SONIC4_TRIG,
+				GPIO_PIN_SET);
 		HAL_Delay(1);
-		HAL_GPIO_WritePin(ULTRA_SONIC1_TRIG_PORT, ULTRA_SONIC1_TRIG, GPIO_PIN_RESET);
-		HAL_GPIO_WritePin(ULTRA_SONIC2_TRIG_PORT, ULTRA_SONIC2_TRIG, GPIO_PIN_RESET);
-		HAL_GPIO_WritePin(ULTRA_SONIC3_TRIG_PORT, ULTRA_SONIC3_TRIG, GPIO_PIN_RESET);
-		HAL_GPIO_WritePin(ULTRA_SONIC4_TRIG_PORT, ULTRA_SONIC4_TRIG, GPIO_PIN_RESET);
+		HAL_GPIO_WritePin(ULTRA_SONIC1_TRIG_PORT, ULTRA_SONIC1_TRIG,
+				GPIO_PIN_RESET);
+		HAL_GPIO_WritePin(ULTRA_SONIC2_TRIG_PORT, ULTRA_SONIC2_TRIG,
+				GPIO_PIN_RESET);
+		HAL_GPIO_WritePin(ULTRA_SONIC3_TRIG_PORT, ULTRA_SONIC3_TRIG,
+				GPIO_PIN_RESET);
+		HAL_GPIO_WritePin(ULTRA_SONIC4_TRIG_PORT, ULTRA_SONIC4_TRIG,
+				GPIO_PIN_RESET);
 		__HAL_TIM_ENABLE_IT(&htim1, TIM_IT_CC1);
 		__HAL_TIM_ENABLE_IT(&htim1, TIM_IT_CC2);
 		__HAL_TIM_ENABLE_IT(&htim1, TIM_IT_CC3);
@@ -97,7 +116,8 @@ static void UltraSonic_void_Init(Ultra_Sonic_Type Ultra_Sonic) {
 
 }
 
-Read_Status UltraSonic_ReadStatusENUM_GetRead(Ultra_Sonic_Type Ultra_Sonic, uint16_t distances[], size_t numDistances) {
+Read_Status UltraSonic_ReadStatusENUM_GetRead(Ultra_Sonic_Type Ultra_Sonic,
+		uint16_t distances[], size_t numDistances) {
 
 	//Creating ENUM Obj 3lshan nshuf fe READ gat wla la2.
 	Read_Status status = NO_READ;
@@ -196,7 +216,8 @@ Read_Status UltraSonic_ReadStatusENUM_GetRead(Ultra_Sonic_Type Ultra_Sonic, uint
 
 		UltraSonic_void_Init(TOTAL_ULTRA_SONIC);
 
-		if (Is_First_Captured_CH1 == 2 && Is_First_Captured_CH2 == 2 && Is_First_Captured_CH3 == 2 && Is_First_Captured_CH4 == 2) {
+		if (Is_First_Captured_CH1 == 2 && Is_First_Captured_CH2 == 2
+				&& Is_First_Captured_CH3 == 2 && Is_First_Captured_CH4 == 2) {
 			distances[0] = Distance_CH1;
 			distances[1] = Distance_CH2;
 			distances[2] = Distance_CH3;
@@ -211,11 +232,11 @@ Read_Status UltraSonic_ReadStatusENUM_GetRead(Ultra_Sonic_Type Ultra_Sonic, uint
 		break;
 	}
 
-    // If the array size is greater than 1 set the rest to zero.
+	// If the array size is greater than 1 set the rest to zero.
 	if (numDistances > 1) {
-	    for (size_t i = numDistances ; i < 4; ++i) {
-	        distances[i] = 0;  // Set other values to zero.
-	    }
+		for (size_t i = numDistances; i < 4; ++i) {
+			distances[i] = 0;  // Set other values to zero.
+		}
 	}
 
 	//Time Between Taking 2 Readings Wra Ba3d.
@@ -226,135 +247,121 @@ Read_Status UltraSonic_ReadStatusENUM_GetRead(Ultra_Sonic_Type Ultra_Sonic, uint
 
 }
 
-
 // Callback function for handling timer input capture events
 void HAL_TIM_IC_CaptureCallback(TIM_HandleTypeDef *htim) {
-	if (htim->Channel == HAL_TIM_ACTIVE_CHANNEL_1) // if the interrupt source is channel1
-			{
-		if (Is_First_Captured_CH1 == 0) // if the first value is not captured
-				{
-			IC_Val1_CH1 = HAL_TIM_ReadCapturedValue(htim, TIM_CHANNEL_1); // read the first value
-			Is_First_Captured_CH1 = 1;  // set the first captured as true
-			// Now change the polarity to falling edge
+
+	switch (htim->Channel) {
+
+	case HAL_TIM_ACTIVE_CHANNEL_1:
+		switch (Is_First_Captured_CH1) {
+		case 0:
+			IC_Val1_CH1 = HAL_TIM_ReadCapturedValue(htim, TIM_CHANNEL_1);
+			Is_First_Captured_CH1 = 1;
 			__HAL_TIM_SET_CAPTUREPOLARITY(htim, TIM_CHANNEL_1,
 					TIM_INPUTCHANNELPOLARITY_FALLING);
-		}
+			break;
 
-		else if (Is_First_Captured_CH1 == 1) // if the first is already captured
-				{
+		case 1:
 			Is_First_Captured_CH1 = 2;
-			IC_Val2_CH1 = HAL_TIM_ReadCapturedValue(htim, TIM_CHANNEL_1); // read second value
+			IC_Val2_CH1 = HAL_TIM_ReadCapturedValue(htim, TIM_CHANNEL_1);
 
 			if (IC_Val2_CH1 > IC_Val1_CH1) {
 				Difference_CH1 = IC_Val2_CH1 - IC_Val1_CH1;
-			}
-
-			else if (IC_Val1_CH1 > IC_Val2_CH1) {
+			} else if (IC_Val1_CH1 > IC_Val2_CH1) {
 				Difference_CH1 = (0xffff - IC_Val1_CH1) + IC_Val2_CH1;
 			}
 
-			Distance_CH1 = Difference_CH1 * .034 / 2;
-			//Is_First_Captured = 0; // set it back to false
-
-			// set polarity to rising edge
+			Distance_CH1 = Difference_CH1 * 0.034 / 2;
 			__HAL_TIM_SET_CAPTUREPOLARITY(htim, TIM_CHANNEL_1,
 					TIM_INPUTCHANNELPOLARITY_RISING);
 			__HAL_TIM_DISABLE_IT(&htim1, TIM_IT_CC1);
+			break;
 		}
-	} else if (htim->Channel == HAL_TIM_ACTIVE_CHANNEL_2) {
-		if (Is_First_Captured_CH2 == 0) // if the first value is not captured
-				{
-			IC_Val1_CH2 = HAL_TIM_ReadCapturedValue(htim, TIM_CHANNEL_2); // read the first value
-			Is_First_Captured_CH2 = 1;  // set the first captured as true
-			// Now change the polarity to falling edge
+		break;
+
+	case HAL_TIM_ACTIVE_CHANNEL_2:
+		switch (Is_First_Captured_CH2) {
+		case 0:
+			IC_Val1_CH2 = HAL_TIM_ReadCapturedValue(htim, TIM_CHANNEL_2);
+			Is_First_Captured_CH2 = 1;
 			__HAL_TIM_SET_CAPTUREPOLARITY(htim, TIM_CHANNEL_2,
 					TIM_INPUTCHANNELPOLARITY_FALLING);
-		}
+			break;
 
-		else if (Is_First_Captured_CH2 == 1) // if the first is already captured
-				{
+		case 1:
 			Is_First_Captured_CH2 = 2;
-			IC_Val2_CH2 = HAL_TIM_ReadCapturedValue(htim, TIM_CHANNEL_2); // read second value
+			IC_Val2_CH2 = HAL_TIM_ReadCapturedValue(htim, TIM_CHANNEL_2);
 
 			if (IC_Val2_CH2 > IC_Val1_CH2) {
 				Difference_CH2 = IC_Val2_CH2 - IC_Val1_CH2;
-			}
-
-			else if (IC_Val1_CH2 > IC_Val2_CH2) {
+			} else if (IC_Val1_CH2 > IC_Val2_CH2) {
 				Difference_CH2 = (0xffff - IC_Val1_CH2) + IC_Val2_CH2;
 			}
 
-			Distance_CH2 = Difference_CH2 * .034 / 2;
-			//Is_First_Captured = 0; // set it back to false
-
-			// set polarity to rising edge
+			Distance_CH2 = Difference_CH2 * 0.034 / 2;
 			__HAL_TIM_SET_CAPTUREPOLARITY(htim, TIM_CHANNEL_2,
 					TIM_INPUTCHANNELPOLARITY_RISING);
 			__HAL_TIM_DISABLE_IT(&htim1, TIM_IT_CC2);
-
+			break;
 		}
-	} else if (htim->Channel == HAL_TIM_ACTIVE_CHANNEL_3) {
-		if (Is_First_Captured_CH3 == 0) // if the first value is not captured
-				{
-			IC_Val1_CH3 = HAL_TIM_ReadCapturedValue(htim, TIM_CHANNEL_3); // read the first value
-			Is_First_Captured_CH3 = 1;  // set the first captured as true
-			// Now change the polarity to falling edge
+		break;
+
+	case HAL_TIM_ACTIVE_CHANNEL_3:
+		switch (Is_First_Captured_CH3) {
+		case 0:
+			IC_Val1_CH3 = HAL_TIM_ReadCapturedValue(htim, TIM_CHANNEL_3);
+			Is_First_Captured_CH3 = 1;
 			__HAL_TIM_SET_CAPTUREPOLARITY(htim, TIM_CHANNEL_3,
 					TIM_INPUTCHANNELPOLARITY_FALLING);
-		}
+			break;
 
-		else if (Is_First_Captured_CH3 == 1) // if the first is already captured
-				{
+		case 1:
 			Is_First_Captured_CH3 = 2;
-			IC_Val2_CH3 = HAL_TIM_ReadCapturedValue(htim, TIM_CHANNEL_3); // read second value
+			IC_Val2_CH3 = HAL_TIM_ReadCapturedValue(htim, TIM_CHANNEL_3);
 
 			if (IC_Val2_CH3 > IC_Val1_CH3) {
 				Difference_CH3 = IC_Val2_CH3 - IC_Val1_CH3;
-			}
-
-			else if (IC_Val1_CH3 > IC_Val2_CH3) {
+			} else if (IC_Val1_CH3 > IC_Val2_CH3) {
 				Difference_CH3 = (0xffff - IC_Val1_CH3) + IC_Val2_CH3;
 			}
 
-			Distance_CH3 = Difference_CH3 * .034 / 2;
-			//Is_First_Captured = 0; // set it back to false
-
-			// set polarity to rising edge
+			Distance_CH3 = Difference_CH3 * 0.034 / 2;
 			__HAL_TIM_SET_CAPTUREPOLARITY(htim, TIM_CHANNEL_3,
 					TIM_INPUTCHANNELPOLARITY_RISING);
 			__HAL_TIM_DISABLE_IT(&htim1, TIM_IT_CC3);
+			break;
 		}
-	} else if (htim->Channel == HAL_TIM_ACTIVE_CHANNEL_4) {
-			if (Is_First_Captured_CH4 == 0) // if the first value is not captured
-					{
-				IC_Val1_CH4 = HAL_TIM_ReadCapturedValue(htim, TIM_CHANNEL_4); // read the first value
-				Is_First_Captured_CH4 = 1;  // set the first captured as true
-				// Now change the polarity to falling edge
-				__HAL_TIM_SET_CAPTUREPOLARITY(htim, TIM_CHANNEL_4,
-						TIM_INPUTCHANNELPOLARITY_FALLING);
+		break;
+
+	case HAL_TIM_ACTIVE_CHANNEL_4:
+		switch (Is_First_Captured_CH4) {
+		case 0:
+			IC_Val1_CH4 = HAL_TIM_ReadCapturedValue(htim, TIM_CHANNEL_4);
+			Is_First_Captured_CH4 = 1;
+			__HAL_TIM_SET_CAPTUREPOLARITY(htim, TIM_CHANNEL_4,
+					TIM_INPUTCHANNELPOLARITY_FALLING);
+			break;
+
+		case 1:
+			Is_First_Captured_CH4 = 2;
+			IC_Val2_CH4 = HAL_TIM_ReadCapturedValue(htim, TIM_CHANNEL_4);
+
+			if (IC_Val2_CH4 > IC_Val1_CH4) {
+				Difference_CH4 = IC_Val2_CH4 - IC_Val1_CH4;
+			} else if (IC_Val1_CH4 > IC_Val2_CH4) {
+				Difference_CH4 = (0xffff - IC_Val1_CH4) + IC_Val2_CH4;
 			}
 
-			else if (Is_First_Captured_CH4 == 1) // if the first is already captured
-					{
-				Is_First_Captured_CH4 = 2;
-				IC_Val2_CH4 = HAL_TIM_ReadCapturedValue(htim, TIM_CHANNEL_4); // read second value
-
-				if (IC_Val2_CH4 > IC_Val1_CH4) {
-					Difference_CH4 = IC_Val2_CH4 - IC_Val1_CH4;
-				}
-
-				else if (IC_Val1_CH4 > IC_Val2_CH4) {
-					Difference_CH4 = (0xffff - IC_Val1_CH4) + IC_Val2_CH4;
-				}
-
-				Distance_CH4 = Difference_CH4 * .034 / 2;
-				//Is_First_Captured = 0; // set it back to false
-
-				// set polarity to rising edge
-				__HAL_TIM_SET_CAPTUREPOLARITY(htim, TIM_CHANNEL_4,
-						TIM_INPUTCHANNELPOLARITY_RISING);
-				__HAL_TIM_DISABLE_IT(&htim1, TIM_IT_CC4);
-			}
+			Distance_CH4 = Difference_CH4 * 0.034 / 2;
+			__HAL_TIM_SET_CAPTUREPOLARITY(htim, TIM_CHANNEL_4,
+					TIM_INPUTCHANNELPOLARITY_RISING);
+			__HAL_TIM_DISABLE_IT(&htim1, TIM_IT_CC4);
+			break;
 		}
+		break;
+
+	default:
+		break;
+	}
 
 }
