@@ -23,6 +23,13 @@ uint32_t Difference_CH3 = 0;
 uint8_t Is_First_Captured_CH3 = 0;
 uint8_t Distance_CH3 = 0;
 
+// Variables for Ultrasonic sensor 4
+uint32_t IC_Val1_CH4 = 0;
+uint32_t IC_Val2_CH4 = 0;
+uint32_t Difference_CH4 = 0;
+uint8_t Is_First_Captured_CH4 = 0;
+uint8_t Distance_CH4 = 0;
+
 // Callback function for handling timer input capture events
 void HAL_TIM_IC_CaptureCallback(TIM_HandleTypeDef *htim) {
 	if (htim->Channel == HAL_TIM_ACTIVE_CHANNEL_1) // if the interrupt source is channel1
@@ -120,7 +127,38 @@ void HAL_TIM_IC_CaptureCallback(TIM_HandleTypeDef *htim) {
 					TIM_INPUTCHANNELPOLARITY_RISING);
 			__HAL_TIM_DISABLE_IT(&htim1, TIM_IT_CC3);
 		}
-	}
+	} else if (htim->Channel == HAL_TIM_ACTIVE_CHANNEL_4) {
+			if (Is_First_Captured_CH4 == 0) // if the first value is not captured
+					{
+				IC_Val1_CH4 = HAL_TIM_ReadCapturedValue(htim, TIM_CHANNEL_4); // read the first value
+				Is_First_Captured_CH4 = 1;  // set the first captured as true
+				// Now change the polarity to falling edge
+				__HAL_TIM_SET_CAPTUREPOLARITY(htim, TIM_CHANNEL_4,
+						TIM_INPUTCHANNELPOLARITY_FALLING);
+			}
+
+			else if (Is_First_Captured_CH4 == 1) // if the first is already captured
+					{
+				Is_First_Captured_CH4 = 2;
+				IC_Val2_CH4 = HAL_TIM_ReadCapturedValue(htim, TIM_CHANNEL_4); // read second value
+
+				if (IC_Val2_CH4 > IC_Val1_CH4) {
+					Difference_CH4 = IC_Val2_CH4 - IC_Val1_CH4;
+				}
+
+				else if (IC_Val1_CH4 > IC_Val2_CH4) {
+					Difference_CH4 = (0xffff - IC_Val1_CH4) + IC_Val2_CH4;
+				}
+
+				Distance_CH4 = Difference_CH4 * .034 / 2;
+				//Is_First_Captured = 0; // set it back to false
+
+				// set polarity to rising edge
+				__HAL_TIM_SET_CAPTUREPOLARITY(htim, TIM_CHANNEL_4,
+						TIM_INPUTCHANNELPOLARITY_RISING);
+				__HAL_TIM_DISABLE_IT(&htim1, TIM_IT_CC4);
+			}
+		}
 
 }
 
@@ -152,9 +190,10 @@ static void UltraSonic_void_Init(Ultra_Sonic_Type Ultra_Sonic) {
 		break;
 
 	case ULTRASONIC4:
-		HAL_GPIO_WritePin(GPIOA, ULTRA_SONIC4_TRIG, GPIO_PIN_SET);
+		HAL_GPIO_WritePin(GPIOE, ULTRA_SONIC4_TRIG, GPIO_PIN_SET);
 		HAL_Delay(1);
-		HAL_GPIO_WritePin(GPIOA, ULTRA_SONIC4_TRIG, GPIO_PIN_RESET);
+		HAL_GPIO_WritePin(GPIOE, ULTRA_SONIC4_TRIG, GPIO_PIN_RESET);
+		__HAL_TIM_ENABLE_IT(&htim1, TIM_IT_CC4);
 		break;
 
 	case ULTRASONIC1_2:

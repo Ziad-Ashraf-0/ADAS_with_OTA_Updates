@@ -42,6 +42,7 @@ osSemaphoreId_t xSemaphoreAutoPark;
 
 /* Private macro -------------------------------------------------------------*/
 /* USER CODE BEGIN PM */
+#define MIN_DISTANCE_TO_BE_IN_PARKING_LANE			12
 
 /* USER CODE END PM */
 
@@ -314,6 +315,10 @@ static void MX_TIM1_Init(void)
   {
     Error_Handler();
   }
+  if (HAL_TIM_IC_ConfigChannel(&htim1, &sConfigIC, TIM_CHANNEL_4) != HAL_OK)
+  {
+    Error_Handler();
+  }
   /* USER CODE BEGIN TIM1_Init 2 */
 
   /* USER CODE END TIM1_Init 2 */
@@ -487,14 +492,14 @@ static void MX_GPIO_Init(void)
   __HAL_RCC_GPIOG_CLK_ENABLE();
 
   /*Configure GPIO pin Output Level */
-  HAL_GPIO_WritePin(GPIOE, GPIO_PIN_8|GPIO_PIN_10|GPIO_PIN_12, GPIO_PIN_RESET);
+  HAL_GPIO_WritePin(GPIOE, GPIO_PIN_8|GPIO_PIN_10|GPIO_PIN_12|GPIO_PIN_15, GPIO_PIN_RESET);
 
   /*Configure GPIO pin Output Level */
   HAL_GPIO_WritePin(GPIOG, GPIO_PIN_8|GPIO_PIN_9|GPIO_PIN_10|GPIO_PIN_11
                           |GPIO_PIN_13|GPIO_PIN_14, GPIO_PIN_RESET);
 
-  /*Configure GPIO pins : PE8 PE10 PE12 */
-  GPIO_InitStruct.Pin = GPIO_PIN_8|GPIO_PIN_10|GPIO_PIN_12;
+  /*Configure GPIO pins : PE8 PE10 PE12 PE15 */
+  GPIO_InitStruct.Pin = GPIO_PIN_8|GPIO_PIN_10|GPIO_PIN_12|GPIO_PIN_15;
   GPIO_InitStruct.Mode = GPIO_MODE_OUTPUT_PP;
   GPIO_InitStruct.Pull = GPIO_NOPULL;
   GPIO_InitStruct.Speed = GPIO_SPEED_FREQ_LOW;
@@ -646,7 +651,7 @@ void Adaptive(void *argument)
 			if (UltraSonic_ReadStatusENUM_GetRead(ULTRASONIC3, &distance, &distance)
 					== READ_EXIST) {
 				if (distance >= 15) {
-					 Car_Void_GoForward(100);
+					Car_Void_GoForward(100);
 					//printf("Distance: %d \r\n", distance);
 					//printf("PWM: %d \r\n",htim2.Instance->CCR1);
 				}
@@ -714,11 +719,89 @@ void AutoPark(void *argument)
   /* USER CODE BEGIN AutoPark */
 	/* Infinite loop */
 	char temp2[] = "AutoPark \r\n";
-	for (;;) {
-		if (task_flag == 'b') {
+	uint8_t Distance[4];
+	for (;;)
+	{
+		if (task_flag == 'b')
+		{
 			HAL_UART_Transmit(&huart1, (uint8_t*) temp2, strlen(temp2), 10);
+
+			HAL_Delay(1000);
+
+			/*Align The Vehicle*/
+
+			//UltraSonic_ReadStatusENUM_GetRead(ULTRASONIC4,&Distance[0],&Distance[0]);
+			/*if(Distance[0] > MIN_DISTANCE_TO_BE_IN_PARKING_LANE)
+			{
+				Car_Void_TurnRight(40,60);
+				HAL_Delay(500);
+				Car_Void_GoBackward(50);
+				HAL_Delay(500);
+				Car_Void_Stop();
+			}
+			else
+			{
+				/*Do Nothing*/
+			/*
+			}*/
+
+			/*Find Spot*/
+			while((UltraSonic_ReadStatusENUM_GetRead(ULTRASONIC4,&Distance[0],&Distance[0])) == NO_READ);
+			while(Distance[0] <= MIN_DISTANCE_TO_BE_IN_PARKING_LANE)
+			{
+				Car_Void_GoForward(50);
+				while((UltraSonic_ReadStatusENUM_GetRead(ULTRASONIC4,&Distance[0],&Distance[0])) == NO_READ);
+			}
+
+			/*Check the spot is going to fit the car*/
+			while((UltraSonic_ReadStatusENUM_GetRead(ULTRASONIC4,&Distance[0],&Distance[0])) == NO_READ);
+			while(Distance[0] > MIN_DISTANCE_TO_BE_IN_PARKING_LANE)
+			{
+				Car_Void_GoForward(50);
+				while((UltraSonic_ReadStatusENUM_GetRead(ULTRASONIC4,&Distance[0],&Distance[0])) == NO_READ);
+			}
+
+			Car_Void_Stop();
+
+
+
+			/*Start Parking*/
+			Car_Void_TurnLeft(60,40);
+			HAL_Delay(500);
+			Car_Void_GoBackward(50);
+			HAL_Delay(2500);
+			Car_Void_TurnRight(40,60);
+			HAL_Delay(500);
+			Car_Void_GoForward(50);
+			HAL_Delay(1000);
+			Car_Void_Stop();
+
+			/*UltraSonic_ReadStatusENUM_GetRead(ULTRASONIC1,&Distance[2],&Distance[3]);
+
+			while (Distance[2] > 8)
+			{
+				Car_Void_GoForward(50);
+				UltraSonic_ReadStatusENUM_GetRead(ULTRASONIC1,&Distance[0],&Distance[2]);
+			}
+
+			//	Car_Void_Stop();
+			HAL_Delay(500);
+			Car_Void_GoBackward(50);
+			HAL_Delay(300);
+			Car_Void_Stop();*/
+
+			/*while (Distance[2] > 8)
+			{
+				Car_Void_GoBackward(80);
+				UltraSonic_ReadStatusENUM_GetRead(ULTRASONIC1,&Distance[0],&Distance[1]);
+			}
+			Car_Void_Stop();
+			*/
+
 			osDelay(35);
-		} else {
+		}
+		else
+		{
 			osDelay(35);
 		}
 
@@ -754,10 +837,13 @@ void HAL_TIM_PeriodElapsedCallback(TIM_HandleTypeDef *htim)
 void Error_Handler(void)
 {
   /* USER CODE BEGIN Error_Handler_Debug */
-	/* User can add his own implementation to report the HAL error return state */
-	__disable_irq();
-	while (1) {
-	}
+		/* User can add his own implementation to report the HAL error return state */
+		__disable_irq();
+		while (1)
+		{
+
+		}
+
   /* USER CODE END Error_Handler_Debug */
 }
 
@@ -772,7 +858,7 @@ void Error_Handler(void)
 void assert_failed(uint8_t *file, uint32_t line)
 {
   /* USER CODE BEGIN 6 */
-  /* User can add his own implementation to report the file name and line number,
+		/* User can add his own implementation to report the file name and line number,
      ex: printf("Wrong parameters value: file %s on line %d\r\n", file, line) */
   /* USER CODE END 6 */
 }
