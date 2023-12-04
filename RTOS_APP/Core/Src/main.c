@@ -43,7 +43,7 @@ osSemaphoreId_t xSemaphoreAutoPark;
 
 /* Private macro -------------------------------------------------------------*/
 /* USER CODE BEGIN PM */
-#define MIN_DISTANCE_TO_BE_IN_PARKING_LANE			12
+#define MIN_DISTANCE_TO_BE_IN_PARKING_LANE			30
 
 /* USER CODE END PM */
 
@@ -120,7 +120,7 @@ int main(void) {
 	HAL_Init();
 
 	/* USER CODE BEGIN Init */
-
+	DWT_Delay_Init();
 	/* USER CODE END Init */
 
 	/* Configure the system clock */
@@ -632,8 +632,8 @@ void Adaptive(void *argument) {
 			if (UltraSonic_ReadStatusENUM_GetRead(ULTRASONIC3, Distances, 1)
 					== READ_EXIST) {
 				if (Distances[0] >= 15) {
-					//Lane_Runnable();
-					Car_Void_GoForward(100);
+					Lane_Runnable();
+					//Car_Void_GoForward(100);
 					//printf("Distance: %d \r\n", distance);
 					//printf("PWM: %d \r\n",htim2.Instance->CCR1);
 				}
@@ -724,6 +724,12 @@ void AutoPark(void *argument) {
 			 }*/
 
 				/*Find Spot*/
+
+			 for(int x = 0; x < 20; x++){
+				 while ((UltraSonic_ReadStatusENUM_GetRead(ULTRASONIC2,
+				 						Distances, 1)) != READ_EXIST)
+				 					;
+			 }
 				while ((UltraSonic_ReadStatusENUM_GetRead(ULTRASONIC4,
 						Distances, 1)) != READ_EXIST)
 					;
@@ -734,7 +740,7 @@ void AutoPark(void *argument) {
 							Distances, 1)) != READ_EXIST)
 						;
 				}
-				HAL_Delay(2000);
+				HAL_Delay(1000);
 
 				/*Check the spot is going to fit the car*/
 				while ((UltraSonic_ReadStatusENUM_GetRead(ULTRASONIC4,
@@ -748,19 +754,22 @@ void AutoPark(void *argument) {
 						;
 				}
 
-				Car_Void_Stop();
+     			Car_Void_Stop();
 
 				HAL_Delay(2000);
 
 				/*Start Parking*/
-				Car_Void_TurnLeft(50, 10);
+				Car_Void_TurnRight(10, 70);
+
 				HAL_Delay(1000);
-				Car_Void_GoBackward(25);
-				HAL_Delay(2000);
-				Car_Void_TurnRight(10, 50);
+				Car_Void_GoBackward(50);
+				HAL_Delay(1500);
+				Car_Void_Stop();
+				HAL_Delay(1000);
+				Car_Void_TurnLeft(70, 10);
 				HAL_Delay(1000);
 				Car_Void_GoForward(25);
-				HAL_Delay(1000);
+				HAL_Delay(300);
 				Car_Void_Stop();
 
 				HAL_Delay(10000);
