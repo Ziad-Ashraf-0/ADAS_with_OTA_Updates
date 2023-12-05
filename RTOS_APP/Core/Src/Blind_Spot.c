@@ -58,7 +58,7 @@ Obstacle_Status_Type BlindSpot_Enum_Check ( BlindSpot_Side_Type side )
 
 	case BOTH_SIDES:
 
-	    while (UltraSonic_ReadStatusENUM_GetRead(ULTRASONIC1_2, Distances, 2) != READ_EXIST)  // Read from Ultrasonic1 and Ultrasonic2
+	    while (UltraSonic_ReadStatusENUM_GetRead(ULTRASONIC1_4, Distances, 2) != READ_EXIST)  // Read from Ultrasonic1 and Ultrasonic2
 	    {
 	        // Continue looping until a valid reading is obtained.
 	    }

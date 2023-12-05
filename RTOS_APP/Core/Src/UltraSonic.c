@@ -2,6 +2,7 @@
 #include "DWT_Delay.h"
 
 extern TIM_HandleTypeDef htim1;
+extern TIM_HandleTypeDef htim9;
 
 // Variables for Ultrasonic sensor 1
 uint32_t IC_Val1_CH1 = 0;
@@ -55,12 +56,12 @@ static void UltraSonic_void_Init(Ultra_Sonic_Type Ultra_Sonic) {
 		HAL_GPIO_WritePin(ULTRA_SONIC2_TRIG_PORT, ULTRA_SONIC2_TRIG,
 				GPIO_PIN_SET);
 
-		DWT_Delay_us(2);
+		DWT_Delay_us(15);
 
 		HAL_GPIO_WritePin(ULTRA_SONIC2_TRIG_PORT, ULTRA_SONIC2_TRIG,
 				GPIO_PIN_RESET);
 
-		__HAL_TIM_ENABLE_IT(&htim1, TIM_IT_CC2);
+		__HAL_TIM_ENABLE_IT(&htim9, TIM_IT_CC2);
 		break;
 
 	case ULTRASONIC3:
@@ -87,11 +88,11 @@ static void UltraSonic_void_Init(Ultra_Sonic_Type Ultra_Sonic) {
 		__HAL_TIM_ENABLE_IT(&htim1, TIM_IT_CC4);
 		break;
 
-	case ULTRASONIC1_2:
+	case ULTRASONIC1_4:
 		HAL_GPIO_WritePin(ULTRA_SONIC1_TRIG_PORT, ULTRA_SONIC1_TRIG,
 				GPIO_PIN_SET);
 
-		HAL_GPIO_WritePin(ULTRA_SONIC2_TRIG_PORT, ULTRA_SONIC2_TRIG,
+		HAL_GPIO_WritePin(ULTRA_SONIC2_TRIG_PORT, ULTRA_SONIC4_TRIG,
 				GPIO_PIN_SET);
 
 		DWT_Delay_us(2);
@@ -99,10 +100,10 @@ static void UltraSonic_void_Init(Ultra_Sonic_Type Ultra_Sonic) {
 		HAL_GPIO_WritePin(ULTRA_SONIC1_TRIG_PORT, ULTRA_SONIC1_TRIG,
 				GPIO_PIN_RESET);
 
-		HAL_GPIO_WritePin(ULTRA_SONIC2_TRIG_PORT, ULTRA_SONIC2_TRIG,
+		HAL_GPIO_WritePin(ULTRA_SONIC2_TRIG_PORT, ULTRA_SONIC4_TRIG,
 				GPIO_PIN_RESET);
 
-		__HAL_TIM_ENABLE_IT(&htim1, TIM_IT_CC2);
+		__HAL_TIM_ENABLE_IT(&htim1, TIM_IT_CC4);
 		__HAL_TIM_ENABLE_IT(&htim1, TIM_IT_CC1);
 		break;
 
@@ -129,14 +130,14 @@ static void UltraSonic_void_Init(Ultra_Sonic_Type Ultra_Sonic) {
 				GPIO_PIN_RESET);
 
 		__HAL_TIM_ENABLE_IT(&htim1, TIM_IT_CC1);
-		__HAL_TIM_ENABLE_IT(&htim1, TIM_IT_CC2);
+		__HAL_TIM_ENABLE_IT(&htim9, TIM_IT_CC2);
 		__HAL_TIM_ENABLE_IT(&htim1, TIM_IT_CC3);
 		__HAL_TIM_ENABLE_IT(&htim1, TIM_IT_CC4);
 		break;
 	}
 
 	// no need
-	__HAL_TIM_SET_COUNTER(&htim1, 0);  // reset the counter
+	//__HAL_TIM_SET_COUNTER(&htim1, 0);  // reset the counter
 
 }
 
@@ -185,6 +186,7 @@ Read_Status UltraSonic_ReadStatusENUM_GetRead(Ultra_Sonic_Type Ultra_Sonic,
 		Is_First_Captured_CH2 = 0; // set it back to false
 		}
 
+
 		break;
 
 	case ULTRASONIC3:
@@ -219,21 +221,21 @@ Read_Status UltraSonic_ReadStatusENUM_GetRead(Ultra_Sonic_Type Ultra_Sonic,
 
 		break;
 
-	case ULTRASONIC1_2:
+	case ULTRASONIC1_4:
 
 		//This Function Just for Initiate the Trigger
 
-		UltraSonic_void_Init(ULTRASONIC1_2);
+		UltraSonic_void_Init(ULTRASONIC1_4);
 
 		//This Function is to Count the Time Between Rising and Failling Edges in 1 Cycle using ICU.
 
-		while (Is_First_Captured_CH1 != 2 && Is_First_Captured_CH2 != 2) {
+		while (Is_First_Captured_CH1 != 2 && Is_First_Captured_CH4 != 2) {
 		}
 		distances[0] = Distance_CH1;
-		distances[1] = Distance_CH2;
+		distances[1] = Distance_CH4;
 		status = READ_EXIST;
 		Is_First_Captured_CH1 = 0;
-		Is_First_Captured_CH2 = 0;
+		Is_First_Captured_CH4 = 0;
 		break;
 
 	case TOTAL_ULTRA_SONIC:
@@ -327,7 +329,7 @@ void HAL_TIM_IC_CaptureCallback(TIM_HandleTypeDef *htim) {
 			Distance_CH2 = Difference_CH2 * 0.034 / 2;
 			__HAL_TIM_SET_CAPTUREPOLARITY(htim, TIM_CHANNEL_2,
 					TIM_INPUTCHANNELPOLARITY_RISING);
-			__HAL_TIM_DISABLE_IT(&htim1, TIM_IT_CC2);
+			//__HAL_TIM_DISABLE_IT(&htim9, TIM_IT_CC2);
 			break;
 		}
 		break;
