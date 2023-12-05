@@ -847,7 +847,7 @@ void AutoPark(void *argument)
 				while ((UltraSonic_ReadStatusENUM_GetRead(ULTRASONIC2,
 						Distances, 1)) != READ_EXIST);
 
-				while (Distances[0] <= 25)
+				while (Distances[0] <= MIN_DISTANCE_TO_BE_IN_PARKING_LANE)
 
 				{
 					// Convert the integer to a string
@@ -872,7 +872,7 @@ void AutoPark(void *argument)
 
 				/*Check the spot is going to fit the car*/
 
-				while (Distances[0] > MIN_DISTANCE_TO_BE_IN_PARKING_LANE) {
+				while (Distances[0] > 25) {
 					Car_Void_GoForward(50);
 
 					// Convert the integer to a string
@@ -885,7 +885,7 @@ void AutoPark(void *argument)
 
 
 				// Convert the integer to a string
-				snprintf(buffer, sizeof(buffer), "%d\r\n", Distances);
+				snprintf(buffer, sizeof(buffer), "%d\r\n", Distances[0]);
 				// Send the string over UART
 				HAL_UART_Transmit(&huart1, (uint8_t *)buffer, strlen(buffer), HAL_MAX_DELAY);
 
@@ -920,8 +920,8 @@ void AutoPark(void *argument)
 				Car_Void_Stop();
 				HAL_Delay(1000);
 				Car_Void_TurnLeft(70, 10);
-								HAL_Delay(1000);
-								while ((UltraSonic_ReadStatusENUM_GetRead(ULTRASONIC3,Distances,1)) != READ_EXIST);
+				HAL_Delay(1000);
+				while ((UltraSonic_ReadStatusENUM_GetRead(ULTRASONIC3,Distances,1)) != READ_EXIST);
 				while (Distances[0] > 5) {
 
 

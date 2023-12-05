@@ -229,13 +229,14 @@ Read_Status UltraSonic_ReadStatusENUM_GetRead(Ultra_Sonic_Type Ultra_Sonic,
 
 		//This Function is to Count the Time Between Rising and Failling Edges in 1 Cycle using ICU.
 
-		while (Is_First_Captured_CH1 != 2 && Is_First_Captured_CH4 != 2) {
-		}
+		if (Is_First_Captured_CH1 == 2 && Is_First_Captured_CH4 == 2) {
+
 		distances[0] = Distance_CH1;
 		distances[1] = Distance_CH4;
 		status = READ_EXIST;
 		Is_First_Captured_CH1 = 0;
 		Is_First_Captured_CH4 = 0;
+		}
 		break;
 
 	case TOTAL_ULTRA_SONIC:
@@ -269,7 +270,7 @@ Read_Status UltraSonic_ReadStatusENUM_GetRead(Ultra_Sonic_Type Ultra_Sonic,
 
 	//Time Between Taking 2 Readings Wra Ba3d.
 
-	//HAL_Delay(TIME_BETWEEN_READINGS_INMILI);
+	HAL_Delay(TIME_BETWEEN_READINGS_INMILI);
 
 	return status;
 

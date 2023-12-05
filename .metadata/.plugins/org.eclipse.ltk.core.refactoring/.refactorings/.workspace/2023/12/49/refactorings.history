@@ -1,4 +1,0 @@
-<?xml version="1.0" encoding="UTF-8"?>
-<session version="1.0">
-<refactoring comment="Delete resource &apos;RTOS_APP/DWT&apos;" deleteContents="false" description="Delete resource &apos;RTOS_APP/DWT&apos;" element1="/RTOS_APP/DWT" flags="7" id="org.eclipse.ltk.core.refactoring.delete.resources" resources="1" stamp="1701584132085"/>
-</session>
