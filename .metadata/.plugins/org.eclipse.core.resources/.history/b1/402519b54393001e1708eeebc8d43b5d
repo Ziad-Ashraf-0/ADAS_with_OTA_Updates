@@ -730,26 +730,26 @@ void AutoPark(void *argument) {
 				 						Distances, 1)) != READ_EXIST)
 				 					;
 			 }
-				while ((UltraSonic_ReadStatusENUM_GetRead(ULTRASONIC2,
+				while ((UltraSonic_ReadStatusENUM_GetRead(ULTRASONIC4,
 						Distances, 1)) != READ_EXIST)
 					;
 
 				while (Distances[0] <= MIN_DISTANCE_TO_BE_IN_PARKING_LANE) {
 					Car_Void_GoForward(50);
-					while ((UltraSonic_ReadStatusENUM_GetRead(ULTRASONIC2,
+					while ((UltraSonic_ReadStatusENUM_GetRead(ULTRASONIC4,
 							Distances, 1)) != READ_EXIST)
 						;
 				}
 				HAL_Delay(1000);
 
 				/*Check the spot is going to fit the car*/
-				while ((UltraSonic_ReadStatusENUM_GetRead(ULTRASONIC2,
+				while ((UltraSonic_ReadStatusENUM_GetRead(ULTRASONIC4,
 						Distances, 1)) != READ_EXIST)
 					;
 
 				while (Distances[0] > MIN_DISTANCE_TO_BE_IN_PARKING_LANE) {
 					Car_Void_GoForward(50);
-					while ((UltraSonic_ReadStatusENUM_GetRead(ULTRASONIC2,
+					while ((UltraSonic_ReadStatusENUM_GetRead(ULTRASONIC4,
 							Distances, 1)) != READ_EXIST)
 						;
 				}

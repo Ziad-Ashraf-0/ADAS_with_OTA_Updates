@@ -730,7 +730,7 @@ void AutoPark(void *argument) {
 				 						Distances, 1)) != READ_EXIST)
 				 					;
 			 }
-				while ((UltraSonic_ReadStatusENUM_GetRead(ULTRASONIC2,
+				while ((UltraSonic_ReadStatusENUM_GetRead(ULTRASONIC4,
 						Distances, 1)) != READ_EXIST)
 					;
 
