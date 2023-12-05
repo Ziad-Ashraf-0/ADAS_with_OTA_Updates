@@ -6,7 +6,7 @@
 #define ULTRA_SONIC1_TRIG  GPIO_PIN_8
 #define ULTRA_SONIC2_TRIG  GPIO_PIN_10
 #define ULTRA_SONIC3_TRIG  GPIO_PIN_12
-#define ULTRA_SONIC4_TRIG  GPIO_PIN_9
+#define ULTRA_SONIC4_TRIG  GPIO_PIN_15
 
 
 #define ULTRA_SONIC1_TRIG_PORT  GPIOE
@@ -33,7 +33,7 @@ typedef enum
 	ULTRASONIC2=1,
 	ULTRASONIC3=2,
 	ULTRASONIC4=3,
-	ULTRASONIC1_2=4,
+	ULTRASONIC1_4=4,
 	TOTAL_ULTRA_SONIC
 	
 }Ultra_Sonic_Type;
@@ -61,7 +61,7 @@ typedef enum{
 
 
 
-Read_Status UltraSonic_ReadStatusENUM_GetRead( Ultra_Sonic_Type Ultra_Sonic , uint16_t * distance1,  uint16_t * distance2);
+Read_Status UltraSonic_ReadStatusENUM_GetRead(Ultra_Sonic_Type Ultra_Sonic, uint16_t distances[], size_t numDistances);
 
 
 

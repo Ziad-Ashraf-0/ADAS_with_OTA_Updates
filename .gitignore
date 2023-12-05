@@ -1,2 +1,3 @@
 # Ignore Debug folder in RTOS_APP
 RTOS_APP/Debug/
+.metadata/
