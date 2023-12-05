@@ -269,7 +269,7 @@ Read_Status UltraSonic_ReadStatusENUM_GetRead(Ultra_Sonic_Type Ultra_Sonic,
 
 	//Time Between Taking 2 Readings Wra Ba3d.
 
-	//HAL_Delay(TIME_BETWEEN_READINGS_INMILI);
+	HAL_Delay(TIME_BETWEEN_READINGS_INMILI);
 
 	return status;
 

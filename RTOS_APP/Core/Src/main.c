@@ -841,15 +841,11 @@ void AutoPark(void *argument)
 				/*Find Spot*/
 
 			 for(int x = 0; x < 20; x++){
-				 while ((UltraSonic_ReadStatusENUM_GetRead(ULTRASONIC2,
-				 						Distances, 1)) != READ_EXIST);
-
-
+				 while ((UltraSonic_ReadStatusENUM_GetRead(ULTRASONIC2,Distances, 1)) != READ_EXIST);
 
 			 }
 				while ((UltraSonic_ReadStatusENUM_GetRead(ULTRASONIC2,
 						Distances, 1)) != READ_EXIST);
-
 
 				while (Distances[0] <= MIN_DISTANCE_TO_BE_IN_PARKING_LANE)
 				{
@@ -859,36 +855,31 @@ void AutoPark(void *argument)
 					HAL_UART_Transmit(&huart1, (uint8_t *)buffer, strlen(buffer), HAL_MAX_DELAY);
 
 					Car_Void_GoForward(50);
-					while ((UltraSonic_ReadStatusENUM_GetRead(ULTRASONIC2,
-							Distances, 1)) != READ_EXIST)
-						;
+					while ((UltraSonic_ReadStatusENUM_GetRead(ULTRASONIC2,Distances, 1)) != READ_EXIST);
 				}
-				HAL_Delay(1000);
-
-				 for(int x = 0; x < 20; x++){
-					 while ((UltraSonic_ReadStatusENUM_GetRead(ULTRASONIC2,
-					 						Distances, 1)) != READ_EXIST);
 
 
+				/*HAL_Delay(1000);
+
+				 for(int x = 0; x < 20; x++)
+				 {
+					 while ((UltraSonic_ReadStatusENUM_GetRead(ULTRASONIC2,Distances, 1)) != READ_EXIST);
 
 				 }
+*/
+
 
 				/*Check the spot is going to fit the car*/
-				while ((UltraSonic_ReadStatusENUM_GetRead(ULTRASONIC2,
-						Distances, 1)) != READ_EXIST)
-					;
 
 				while (Distances[0] > MIN_DISTANCE_TO_BE_IN_PARKING_LANE) {
-					Car_Void_GoForward(80);
+					Car_Void_GoForward(50);
 
 					// Convert the integer to a string
 					snprintf(buffer, sizeof(buffer), "%d\r\n", Distances[0]);
 					// Send the string over UART
 					HAL_UART_Transmit(&huart1, (uint8_t *)buffer, strlen(buffer), HAL_MAX_DELAY);
 
-					while ((UltraSonic_ReadStatusENUM_GetRead(ULTRASONIC2,
-							Distances, 1)) != READ_EXIST)
-						;
+					while ((UltraSonic_ReadStatusENUM_GetRead(ULTRASONIC2,Distances, 1)) != READ_EXIST);
 				}
 
      			Car_Void_Stop();
