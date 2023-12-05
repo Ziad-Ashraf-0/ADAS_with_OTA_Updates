@@ -92,15 +92,15 @@ static void UltraSonic_void_Init(Ultra_Sonic_Type Ultra_Sonic) {
 		HAL_GPIO_WritePin(ULTRA_SONIC1_TRIG_PORT, ULTRA_SONIC1_TRIG,
 				GPIO_PIN_SET);
 
-		HAL_GPIO_WritePin(ULTRA_SONIC2_TRIG_PORT, ULTRA_SONIC4_TRIG,
+		HAL_GPIO_WritePin(ULTRA_SONIC4_TRIG_PORT, ULTRA_SONIC4_TRIG,
 				GPIO_PIN_SET);
 
-		DWT_Delay_us(2);
+		DWT_Delay_us(15);
 
 		HAL_GPIO_WritePin(ULTRA_SONIC1_TRIG_PORT, ULTRA_SONIC1_TRIG,
 				GPIO_PIN_RESET);
 
-		HAL_GPIO_WritePin(ULTRA_SONIC2_TRIG_PORT, ULTRA_SONIC4_TRIG,
+		HAL_GPIO_WritePin(ULTRA_SONIC4_TRIG_PORT, ULTRA_SONIC4_TRIG,
 				GPIO_PIN_RESET);
 
 		__HAL_TIM_ENABLE_IT(&htim1, TIM_IT_CC4);
@@ -269,7 +269,7 @@ Read_Status UltraSonic_ReadStatusENUM_GetRead(Ultra_Sonic_Type Ultra_Sonic,
 
 	//Time Between Taking 2 Readings Wra Ba3d.
 
-	HAL_Delay(TIME_BETWEEN_READINGS_INMILI);
+	//HAL_Delay(TIME_BETWEEN_READINGS_INMILI);
 
 	return status;
 

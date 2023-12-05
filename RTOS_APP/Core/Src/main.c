@@ -804,7 +804,7 @@ void AutoPark(void *argument)
 	char temp2[] = "AutoPark3 \r\n";
 
 	char buffer[20];
-	uint16_t Distances[4] = { 0 }; // Array to store distances from the ultrasonic sensors.
+	uint16_t Distances[4] ={0}; // Array to store distances from the ultrasonic sensors.
 
 
 
@@ -847,7 +847,8 @@ void AutoPark(void *argument)
 				while ((UltraSonic_ReadStatusENUM_GetRead(ULTRASONIC2,
 						Distances, 1)) != READ_EXIST);
 
-				while (Distances[0] <= MIN_DISTANCE_TO_BE_IN_PARKING_LANE)
+				while (Distances[0] <= 25)
+
 				{
 					// Convert the integer to a string
 					snprintf(buffer, sizeof(buffer), "%d\r\n", Distances[0]);
@@ -879,8 +880,14 @@ void AutoPark(void *argument)
 					// Send the string over UART
 					HAL_UART_Transmit(&huart1, (uint8_t *)buffer, strlen(buffer), HAL_MAX_DELAY);
 
-					while ((UltraSonic_ReadStatusENUM_GetRead(ULTRASONIC2,Distances, 1)) != READ_EXIST);
+					while ((UltraSonic_ReadStatusENUM_GetRead(ULTRASONIC2,Distances,1)) != READ_EXIST);
 				}
+
+
+				// Convert the integer to a string
+				snprintf(buffer, sizeof(buffer), "%d\r\n", Distances);
+				// Send the string over UART
+				HAL_UART_Transmit(&huart1, (uint8_t *)buffer, strlen(buffer), HAL_MAX_DELAY);
 
      			Car_Void_Stop();
 
@@ -888,15 +895,46 @@ void AutoPark(void *argument)
 
 				/*Start Parking*/
 				Car_Void_TurnRight(10, 70);
-
 				HAL_Delay(1000);
-				Car_Void_GoBackward(50);
+
+				while ((UltraSonic_ReadStatusENUM_GetRead(ULTRASONIC1,Distances,1)) != READ_EXIST);
+				while ((UltraSonic_ReadStatusENUM_GetRead(ULTRASONIC1,Distances,1)) != READ_EXIST);
+				while ((UltraSonic_ReadStatusENUM_GetRead(ULTRASONIC1,Distances,1)) != READ_EXIST);
+				while (Distances[0]> 5) {
+
+
+									// Convert the integer to a string
+									snprintf(buffer, sizeof(buffer), "%d\r\n", Distances[0]);
+									// Send the string over UART
+									HAL_UART_Transmit(&huart1, (uint8_t *)buffer, strlen(buffer), HAL_MAX_DELAY);
+
+									Car_Void_GoBackward(50);
+									while ((UltraSonic_ReadStatusENUM_GetRead(ULTRASONIC1,Distances,1)) != READ_EXIST);
+								}
+
+				//Car_Void_TurnRight(10, 70);
+
+
+				//Car_Void_GoBackward(50);
 				HAL_Delay(1500);
 				Car_Void_Stop();
 				HAL_Delay(1000);
 				Car_Void_TurnLeft(70, 10);
-				HAL_Delay(1000);
-				Car_Void_GoForward(25);
+								HAL_Delay(1000);
+								while ((UltraSonic_ReadStatusENUM_GetRead(ULTRASONIC3,Distances,1)) != READ_EXIST);
+				while (Distances[0] > 5) {
+
+
+													// Convert the integer to a string
+					snprintf(buffer, sizeof(buffer), "%d\r\n", Distances[0]);
+													// Send the string over UART
+					HAL_UART_Transmit(&huart1, (uint8_t *)buffer, strlen(buffer), HAL_MAX_DELAY);
+
+					Car_Void_GoForward(25);
+					while ((UltraSonic_ReadStatusENUM_GetRead(ULTRASONIC3,Distances, 1)) != READ_EXIST);
+												}
+
+				//Car_Void_GoForward(25);
 				HAL_Delay(300);
 				Car_Void_Stop();
 
