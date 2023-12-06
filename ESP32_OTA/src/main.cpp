@@ -30,12 +30,14 @@
 
 #define LIST_FILES \
   0x75 // This command is used to update the firmware of the application
-/* 1. Define the WiFi credentials */
 
 #define GOTO_BL 0x66 // This command is used to goto bl from user app
 
-#define WIFI_SSID "Fiber"
-#define WIFI_PASSWORD "P@ssw0rd@MCIT"
+#define MV_CAR 0x91 // This command is used to move the car
+
+/* 1. Define the WiFi credentials */
+#define WIFI_SSID "ZIAD"
+#define WIFI_PASSWORD "ZIADee66"
 /* 2. Define the API Key */
 #define API_KEY "AIzaSyAxVCJor23p01JiiVS2lQR0lVyy_Nfkmdw"
 /* 3. Define the user Email and password that alreadey registerd or added in
@@ -501,6 +503,68 @@ void handleData()
   }
 }
 
+void handleMove(){
+   // Get the values of the parameters
+  String requestBody = server.arg("plain");
+  // Parse the JSON data
+  DynamicJsonDocument jsonDocument(1024);
+  DeserializationError error = deserializeJson(jsonDocument, requestBody);
+  if (error)
+  {
+    // Handle JSON parsing error
+    Serial.println("Error parsing JSON");
+    server.send(400, "text/plain", "Invalid JSON format.");
+    return;
+  }
+  // Access the JSON data
+String param1Value = jsonDocument["direction"].as<String>();
+String param2Value = jsonDocument["rightSpeed"].as<String>();
+String param3Value = jsonDocument["leftSpeed"].as<String>();
+
+// Convert string values to integers (adjust the types accordingly)
+uint8_t param1 = param1Value.toInt();
+uint8_t param2 = param2Value.toInt();
+uint8_t param3 = param3Value.toInt();
+
+// Do something with the received parameters
+// Example: Print the values to Serial monitor
+Serial.print("Param1: ");
+Serial.println(param1Value);
+Serial.print("Param2: ");
+Serial.println(param2);
+Serial.print("Param3: ");
+Serial.println(param3);
+
+// Create a new JSON object to include in the response
+JsonObject response = jsonDocument.to<JsonObject>();
+
+can_message_t message;
+message.flags = CAN_MSG_FLAG_NONE;
+message.identifier = MV_CAR;
+message.data_length_code = 3;
+
+// Assign parameters to data bytes
+message.data[0] = param1;
+message.data[1] = param2;
+message.data[2] = param3;
+
+if (can_transmit(&message, pdMS_TO_TICKS(1000)) == ESP_OK)
+{
+  Serial.println("Message queued for transmission (Info)");
+}
+else
+{
+  Serial.println("Failed to queue message for transmission(Info)");
+}
+
+  response["id"] = MV_CAR;
+  response["response"] = "Request recieved successfully";
+  // Send a JSON response to the client
+  String jsonResponse;
+  serializeJson(response, jsonResponse);
+  server.send(200, "application/json", jsonResponse);
+}
+
 void setup()
 {
   pinMode(led, OUTPUT);
@@ -591,6 +655,9 @@ void setup()
 
   /*Listen for POST request with url /data then calles handleData*/
   server.on("/data", HTTP_POST, handleData);
+
+  /*Listen for POST request with url /move then calles handleMove*/
+  server.on("/move", HTTP_POST, handleMove);
 
   server.begin();
   Serial.println("HTTP server started");
