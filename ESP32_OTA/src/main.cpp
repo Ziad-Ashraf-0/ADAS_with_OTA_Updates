@@ -565,6 +565,58 @@ else
   server.send(200, "application/json", jsonResponse);
 }
 
+
+void handleControl(){
+   // Get the values of the parameters
+  String requestBody = server.arg("plain");
+  // Parse the JSON data
+  DynamicJsonDocument jsonDocument(1024);
+  DeserializationError error = deserializeJson(jsonDocument, requestBody);
+  if (error)
+  {
+    // Handle JSON parsing error
+    Serial.println("Error parsing JSON");
+    server.send(400, "text/plain", "Invalid JSON format.");
+    return;
+  }
+  // Access the JSON data
+String param1Value = jsonDocument["mode"].as<String>();
+
+// Convert string values to integers (adjust the types accordingly)
+uint8_t param1 = param1Value.toInt();
+
+
+// Do something with the received parameters
+// Example: Print the values to Serial monitor
+Serial.print("Param1: ");
+Serial.println(param1);
+
+
+// Create a new JSON object to include in the response
+JsonObject response = jsonDocument.to<JsonObject>();
+
+can_message_t message;
+message.flags = CAN_MSG_FLAG_NONE;
+message.identifier = param1;
+message.data_length_code = 1;
+
+
+if (can_transmit(&message, pdMS_TO_TICKS(1000)) == ESP_OK)
+{
+  Serial.println("Message queued for transmission (Info)");
+}
+else
+{
+  Serial.println("Failed to queue message for transmission(Info)");
+}
+
+  response["id"] = param1;
+  response["response"] = "Request recieved successfully";
+  // Send a JSON response to the client
+  String jsonResponse;
+  serializeJson(response, jsonResponse);
+  server.send(200, "application/json", jsonResponse);
+}
 void setup()
 {
   pinMode(led, OUTPUT);
@@ -658,6 +710,9 @@ void setup()
 
   /*Listen for POST request with url /move then calles handleMove*/
   server.on("/move", HTTP_POST, handleMove);
+
+    /*Listen for POST request with url /move then calles handleControl*/
+  server.on("/control", HTTP_POST, handleControl);
 
   server.begin();
   Serial.println("HTTP server started");

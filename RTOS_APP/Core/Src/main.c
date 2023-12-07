@@ -196,12 +196,15 @@ int main(void) {
 
 	/* creation of adaptive */
 	adaptiveHandle = osThreadNew(Adaptive, NULL, &adaptive_attributes);
+	osThreadSuspend(adaptiveHandle);
 
 	/* creation of Blindspot */
 	BlindspotHandle = osThreadNew(BlindSpot, NULL, &Blindspot_attributes);
+	osThreadSuspend(BlindspotHandle);
 
 	/* creation of Autopark */
 	AutoparkHandle = osThreadNew(AutoPark, NULL, &Autopark_attributes);
+	osThreadSuspend(AutoparkHandle);
 
 	/* creation of can_msg */
 	can_msgHandle = osThreadNew(CAN_MSG, NULL, &can_msg_attributes);
@@ -594,8 +597,7 @@ static void MX_GPIO_Init(void) {
 
 	/*Configure GPIO pin Output Level */
 	HAL_GPIO_WritePin(GPIOE,
-			GPIO_PIN_8 | GPIO_PIN_10 | GPIO_PIN_12 | GPIO_PIN_15,
-			GPIO_PIN_RESET);
+	GPIO_PIN_8 | GPIO_PIN_10 | GPIO_PIN_12 | GPIO_PIN_15, GPIO_PIN_RESET);
 
 	/*Configure GPIO pin Output Level */
 	HAL_GPIO_WritePin(GPIOG,
@@ -768,32 +770,29 @@ void Adaptive(void *argument) {
 
 	/* Infinite loop */
 	for (;;) {
-		if (task_flag == 'a') {
-			HAL_UART_Transmit(&huart1, (uint8_t*) temp2, strlen(temp2), 10);
+		HAL_UART_Transmit(&huart1, (uint8_t*) temp2, strlen(temp2), 10);
 
-			if (UltraSonic_ReadStatusENUM_GetRead(ULTRASONIC3, Distances, 1)
-					== READ_EXIST) {
-				if (Distances[0] >= 15) {
-					Lane_Runnable();
-					//Car_Void_GoForward(100);
+		if (UltraSonic_ReadStatusENUM_GetRead(ULTRASONIC3, Distances, 1)
+				== READ_EXIST) {
+			if (Distances[0] >= 15) {
+				Lane_Runnable();
+				//Car_Void_GoForward(100);
+				//printf("Distance: %d \r\n", distance);
+				//printf("PWM: %d \r\n",htim2.Instance->CCR1);
+			}
+
+			else if (Distances[0] < 15) {
+				if (Distances[0] > 10) {
+					Car_Void_GoForward(50);
+					//printf("Distance: %d \r\n", distance);
+					//printf("PWM: %d \r\n",htim2.Instance->CCR1);
+				} else if (Distances[0] < 10) {
+					Car_Void_Stop();
 					//printf("Distance: %d \r\n", distance);
 					//printf("PWM: %d \r\n",htim2.Instance->CCR1);
 				}
-
-				else if (Distances[0] < 15) {
-					if (Distances[0] > 10) {
-						Car_Void_GoForward(50);
-						//printf("Distance: %d \r\n", distance);
-						//printf("PWM: %d \r\n",htim2.Instance->CCR1);
-					} else if (Distances[0] < 10) {
-						Car_Void_Stop();
-						//printf("Distance: %d \r\n", distance);
-						//printf("PWM: %d \r\n",htim2.Instance->CCR1);
-					}
-				}
-
 			}
-		} else {
+
 		}
 
 		osDelay(100);
@@ -814,13 +813,9 @@ void BlindSpot(void *argument) {
 	/* Infinite loop */
 	char temp2[] = "BlindSpot \r\n";
 	for (;;) {
-		if (task_flag == 'a') {
-			HAL_UART_Transmit(&huart1, (uint8_t*) temp2, strlen(temp2), 10);
-			if (BlindSpot_Enum_Check(BOTH_SIDES) == OBSTACLE_EXIST) {
 
-			} else {
-
-			}
+		HAL_UART_Transmit(&huart1, (uint8_t*) temp2, strlen(temp2), 10);
+		if (BlindSpot_Enum_Check(BOTH_SIDES) == OBSTACLE_EXIST) {
 
 		} else {
 
@@ -848,78 +843,66 @@ void AutoPark(void *argument) {
 	uint16_t Distances[4] = { 0 }; // Array to store distances from the ultrasonic sensors.
 
 	for (;;) {
-		if (task_flag == 'b') {
-			HAL_UART_Transmit(&huart1, (uint8_t*) temp2, strlen(temp2), 10);
+		HAL_UART_Transmit(&huart1, (uint8_t*) temp2, strlen(temp2), 10);
 
-			// Convert the integer to a string
-			snprintf(buffer, sizeof(buffer), "%d\r\n", Distances[0]);
-			// Send the string over UART
-			HAL_UART_Transmit(&huart1, (uint8_t*) buffer, strlen(buffer),
-			HAL_MAX_DELAY);
+		// Convert the integer to a string
+		snprintf(buffer, sizeof(buffer), "%d\r\n", Distances[0]);
+		// Send the string over UART
+		HAL_UART_Transmit(&huart1, (uint8_t*) buffer, strlen(buffer),
+		HAL_MAX_DELAY);
 
-			HAL_Delay(1000);
+		HAL_Delay(1000);
 
-			Car_Void_Stop();
+		Car_Void_Stop();
 
-			/*Align The Vehicle*/
+		/*Align The Vehicle*/
 
-			//UltraSonic_ReadStatusENUM_GetRead(ULTRASONIC4,&Distance[0],&Distance[0]);
-			/*if(Distance[0] > MIN_DISTANCE_TO_BE_IN_PARKING_LANE)
-			 {
-			 Car_Void_TurnRight(40,60);
-			 HAL_Delay(500);
-			 Car_Void_GoBackward(50);
-			 HAL_Delay(500);
-			 Car_Void_Stop();
-			 }
-			 else
-			 {
-			 /*Do Nothing*/
-			/*
-			 }*/
+		//UltraSonic_ReadStatusENUM_GetRead(ULTRASONIC4,&Distance[0],&Distance[0]);
+		/*if(Distance[0] > MIN_DISTANCE_TO_BE_IN_PARKING_LANE)
+		 {
+		 Car_Void_TurnRight(40,60);
+		 HAL_Delay(500);
+		 Car_Void_GoBackward(50);
+		 HAL_Delay(500);
+		 Car_Void_Stop();
+		 }
+		 else
+		 {
+		 /*Do Nothing*/
+		/*
+		 }*/
 
-			/*Find Spot*/
+		/*Find Spot*/
 
-			for (int x = 0; x < 20; x++) {
-				while ((UltraSonic_ReadStatusENUM_GetRead(ULTRASONIC2,
-						Distances, 1)) != READ_EXIST)
-					;
-
-			}
+		for (int x = 0; x < 20; x++) {
 			while ((UltraSonic_ReadStatusENUM_GetRead(ULTRASONIC2, Distances, 1))
 					!= READ_EXIST)
 				;
 
-			while (Distances[0] <= MIN_DISTANCE_TO_BE_IN_PARKING_LANE)
+		}
+		while ((UltraSonic_ReadStatusENUM_GetRead(ULTRASONIC2, Distances, 1))
+				!= READ_EXIST)
+			;
 
-			{
-				// Convert the integer to a string
-				snprintf(buffer, sizeof(buffer), "%d\r\n", Distances[0]);
-				// Send the string over UART
-				HAL_UART_Transmit(&huart1, (uint8_t*) buffer, strlen(buffer),
-				HAL_MAX_DELAY);
+		while (Distances[0] <= MIN_DISTANCE_TO_BE_IN_PARKING_LANE)
 
-				Car_Void_GoForward(50);
-				while ((UltraSonic_ReadStatusENUM_GetRead(ULTRASONIC2,
-						Distances, 1)) != READ_EXIST)
-					;
-			}
+		{
+			// Convert the integer to a string
+			snprintf(buffer, sizeof(buffer), "%d\r\n", Distances[0]);
+			// Send the string over UART
+			HAL_UART_Transmit(&huart1, (uint8_t*) buffer, strlen(buffer),
+			HAL_MAX_DELAY);
 
-			/*Check the spot is going to fit the car*/
+			Car_Void_GoForward(50);
+			while ((UltraSonic_ReadStatusENUM_GetRead(ULTRASONIC2, Distances, 1))
+					!= READ_EXIST)
+				;
+		}
 
-			while (Distances[0] > 20) {
-				Car_Void_GoForward(50);
+		/*Check the spot is going to fit the car*/
 
-				// Convert the integer to a string
-				snprintf(buffer, sizeof(buffer), "%d\r\n", Distances[0]);
-				// Send the string over UART
-				HAL_UART_Transmit(&huart1, (uint8_t*) buffer, strlen(buffer),
-				HAL_MAX_DELAY);
-
-				while ((UltraSonic_ReadStatusENUM_GetRead(ULTRASONIC2,
-						Distances, 1)) != READ_EXIST)
-					;
-			}
+		while (Distances[0] > 20) {
+			Car_Void_GoForward(50);
 
 			// Convert the integer to a string
 			snprintf(buffer, sizeof(buffer), "%d\r\n", Distances[0]);
@@ -927,74 +910,82 @@ void AutoPark(void *argument) {
 			HAL_UART_Transmit(&huart1, (uint8_t*) buffer, strlen(buffer),
 			HAL_MAX_DELAY);
 
-			Car_Void_Stop();
-
-			HAL_Delay(2000);
-
-			/*Start Parking*/
-			Car_Void_GoBackward(50);
-			HAL_Delay(650);
-			Car_Void_TurnRight(0, 80);
-			HAL_Delay(1400);
-			Car_Void_Stop();
-
-			while ((UltraSonic_ReadStatusENUM_GetRead(ULTRASONIC1_4, Distances,
-					1)) != READ_EXIST)
-				;
-			while ((UltraSonic_ReadStatusENUM_GetRead(ULTRASONIC1_4, Distances,
-					1)) != READ_EXIST)
-				;
-			while ((UltraSonic_ReadStatusENUM_GetRead(ULTRASONIC1_4, Distances,
-					1)) != READ_EXIST)
-				;
-			while (Distances[1] > 5) {
-
-				// Convert the integer to a string
-				snprintf(buffer, sizeof(buffer), "%d\r\n", Distances[0]);
-				// Send the string over UART
-				HAL_UART_Transmit(&huart1, (uint8_t*) buffer, strlen(buffer),
-				HAL_MAX_DELAY);
-
-				Car_Void_GoBackward(50);
-				while ((UltraSonic_ReadStatusENUM_GetRead(ULTRASONIC1_4,
-						Distances, 1)) != READ_EXIST)
-					;
-			}
-
-			Car_Void_Stop();
-			HAL_Delay(1000);
-			Car_Void_TurnLeft(100, 100);
-			HAL_Delay(430);
-			while ((UltraSonic_ReadStatusENUM_GetRead(ULTRASONIC3, Distances, 1))
+			while ((UltraSonic_ReadStatusENUM_GetRead(ULTRASONIC2, Distances, 1))
 					!= READ_EXIST)
 				;
-			while ((UltraSonic_ReadStatusENUM_GetRead(ULTRASONIC3, Distances, 1))
-					!= READ_EXIST)
-				;
-			while ((UltraSonic_ReadStatusENUM_GetRead(ULTRASONIC3, Distances, 1))
-					!= READ_EXIST)
-				;
-			while (Distances[0] > 5) {
-
-				// Convert the integer to a string
-				snprintf(buffer, sizeof(buffer), "%d\r\n", Distances[0]);
-				// Send the string over UART
-				HAL_UART_Transmit(&huart1, (uint8_t*) buffer, strlen(buffer),
-				HAL_MAX_DELAY);
-
-				Car_Void_GoForward(40);
-				while ((UltraSonic_ReadStatusENUM_GetRead(ULTRASONIC3,
-						Distances, 1)) != READ_EXIST)
-					;
-			}
-
-			Car_Void_Stop();
-			HAL_Delay(10000);
-
-			osDelay(35);
-		} else {
-			osDelay(35);
 		}
+
+		// Convert the integer to a string
+		snprintf(buffer, sizeof(buffer), "%d\r\n", Distances[0]);
+		// Send the string over UART
+		HAL_UART_Transmit(&huart1, (uint8_t*) buffer, strlen(buffer),
+		HAL_MAX_DELAY);
+
+		Car_Void_Stop();
+
+		HAL_Delay(2000);
+
+		/*Start Parking*/
+		Car_Void_GoBackward(50);
+		HAL_Delay(650);
+		Car_Void_TurnRight(0, 80);
+		HAL_Delay(1400);
+		Car_Void_Stop();
+
+		while ((UltraSonic_ReadStatusENUM_GetRead(ULTRASONIC1_4, Distances, 1))
+				!= READ_EXIST)
+			;
+		while ((UltraSonic_ReadStatusENUM_GetRead(ULTRASONIC1_4, Distances, 1))
+				!= READ_EXIST)
+			;
+		while ((UltraSonic_ReadStatusENUM_GetRead(ULTRASONIC1_4, Distances, 1))
+				!= READ_EXIST)
+			;
+		while (Distances[1] > 5) {
+
+			// Convert the integer to a string
+			snprintf(buffer, sizeof(buffer), "%d\r\n", Distances[0]);
+			// Send the string over UART
+			HAL_UART_Transmit(&huart1, (uint8_t*) buffer, strlen(buffer),
+			HAL_MAX_DELAY);
+
+			Car_Void_GoBackward(50);
+			while ((UltraSonic_ReadStatusENUM_GetRead(ULTRASONIC1_4, Distances,
+					1)) != READ_EXIST)
+				;
+		}
+
+		Car_Void_Stop();
+		HAL_Delay(1000);
+		Car_Void_TurnLeft(100, 100);
+		HAL_Delay(430);
+		while ((UltraSonic_ReadStatusENUM_GetRead(ULTRASONIC3, Distances, 1))
+				!= READ_EXIST)
+			;
+		while ((UltraSonic_ReadStatusENUM_GetRead(ULTRASONIC3, Distances, 1))
+				!= READ_EXIST)
+			;
+		while ((UltraSonic_ReadStatusENUM_GetRead(ULTRASONIC3, Distances, 1))
+				!= READ_EXIST)
+			;
+		while (Distances[0] > 5) {
+
+			// Convert the integer to a string
+			snprintf(buffer, sizeof(buffer), "%d\r\n", Distances[0]);
+			// Send the string over UART
+			HAL_UART_Transmit(&huart1, (uint8_t*) buffer, strlen(buffer),
+			HAL_MAX_DELAY);
+
+			Car_Void_GoForward(40);
+			while ((UltraSonic_ReadStatusENUM_GetRead(ULTRASONIC3, Distances, 1))
+					!= READ_EXIST)
+				;
+		}
+
+		Car_Void_Stop();
+		HAL_Delay(10000);
+
+		osDelay(35);
 
 	}
 	/* USER CODE END AutoPark */
@@ -1016,7 +1007,30 @@ void CAN_MSG(void *argument) {
 		while (HAL_CAN_GetRxFifoFillLevel(&hcan1, CAN_RX_FIFO0) == 0) {
 		};
 		HAL_CAN_GetRxMessage(&hcan1, CAN_RX_FIFO0, &RxHeader, RxData);
-		bootloader_can_read_data();
+
+		uint32_t canID = RxHeader.StdId; // Assuming standard CAN ID, modify as needed
+
+		if (canID == 0x99) {
+			// Suspend Task A
+			osThreadSuspend(adaptiveHandle);
+			osThreadSuspend(BlindspotHandle);
+			osThreadResume(AutoparkHandle);
+		} else if (canID == 0xA7) {
+			// Suspend Task B
+			osThreadSuspend(AutoparkHandle);
+			osThreadResume(BlindspotHandle);
+			osThreadResume(adaptiveHandle);
+		} else if (canID == MV_CAR) {
+			// Suspend both Task A and Task B
+			osThreadSuspend(adaptiveHandle);
+			osThreadSuspend(BlindspotHandle);
+			osThreadSuspend(AutoparkHandle);
+			bootloader_can_read_data();
+		} else {
+			// Call bootloader_can_read_data()
+			bootloader_can_read_data();
+		}
+
 	}
 
 	/* USER CODE END CAN_MSG */
