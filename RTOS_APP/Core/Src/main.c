@@ -27,6 +27,7 @@
 #include "UltraSonic.h"
 #include "Motor_Interfce.h"
 #include "lane_detection.h"
+#include "ota_update.h"
 #include <stdio.h>
 
 /* USER CODE END Includes */
@@ -50,6 +51,8 @@ osSemaphoreId_t xSemaphoreAutoPark;
 /* USER CODE END PM */
 
 /* Private variables ---------------------------------------------------------*/
+CAN_HandleTypeDef hcan1;
+
 TIM_HandleTypeDef htim1;
 TIM_HandleTypeDef htim3;
 TIM_HandleTypeDef htim4;
@@ -73,8 +76,16 @@ const osThreadAttr_t Blindspot_attributes = { .name = "Blindspot", .stack_size =
 osThreadId_t AutoparkHandle;
 const osThreadAttr_t Autopark_attributes = { .name = "Autopark", .stack_size =
 		128 * 4, .priority = (osPriority_t) osPriorityHigh, };
+/* Definitions for can_msg */
+osThreadId_t can_msgHandle;
+const osThreadAttr_t can_msg_attributes = { .name = "can_msg", .stack_size = 128
+		* 4, .priority = (osPriority_t) osPriorityAboveNormal5, };
 /* USER CODE BEGIN PV */
-
+CAN_RxHeaderTypeDef RxHeader;
+CAN_TxHeaderTypeDef TxHeader;
+uint32_t TxMailbox;
+uint8_t RxData[8];
+uint8_t TxData[8];
 /* USER CODE END PV */
 
 /* Private function prototypes -----------------------------------------------*/
@@ -85,10 +96,12 @@ static void MX_TIM1_Init(void);
 static void MX_TIM3_Init(void);
 static void MX_TIM4_Init(void);
 static void MX_TIM9_Init(void);
+static void MX_CAN1_Init(void);
 void StartDefaultTask(void *argument);
 void Adaptive(void *argument);
 void BlindSpot(void *argument);
 void AutoPark(void *argument);
+void CAN_MSG(void *argument);
 
 /* USER CODE BEGIN PFP */
 volatile uint8_t task_flag = 0;
@@ -141,17 +154,17 @@ int main(void) {
 	MX_TIM3_Init();
 	MX_TIM4_Init();
 	MX_TIM9_Init();
+	MX_CAN1_Init();
 	/* USER CODE BEGIN 2 */
 	HAL_UART_Receive_IT(&huart1, Rx_data, 1);
 	HAL_TIM_Base_Start_IT(&htim1);
 	HAL_TIM_IC_Start_IT(&htim1, TIM_CHANNEL_1);
-	//HAL_TIM_IC_Start_IT(&htim1, TIM_CHANNEL_2);
 	HAL_TIM_IC_Start_IT(&htim9, TIM_CHANNEL_2);
 	HAL_TIM_IC_Start_IT(&htim1, TIM_CHANNEL_3);
 	HAL_TIM_IC_Start_IT(&htim1, TIM_CHANNEL_4);
-	//HAL_TIM_IC_Start_IT(&htim8, TIM_CHANNEL_2);
 	HAL_TIM_PWM_Start(&htim3, TIM_CHANNEL_1);
 	HAL_TIM_PWM_Start(&htim4, TIM_CHANNEL_1);
+	HAL_CAN_Start(&hcan1);
 
 	/* USER CODE END 2 */
 
@@ -190,6 +203,9 @@ int main(void) {
 	/* creation of Autopark */
 	AutoparkHandle = osThreadNew(AutoPark, NULL, &Autopark_attributes);
 
+	/* creation of can_msg */
+	can_msgHandle = osThreadNew(CAN_MSG, NULL, &can_msg_attributes);
+
 	/* USER CODE BEGIN RTOS_THREADS */
 	/* add threads, ... */
 	/* USER CODE END RTOS_THREADS */
@@ -223,7 +239,7 @@ void SystemClock_Config(void) {
 	/** Configure the main internal regulator output voltage
 	 */
 	__HAL_RCC_PWR_CLK_ENABLE();
-	__HAL_PWR_VOLTAGESCALING_CONFIG(PWR_REGULATOR_VOLTAGE_SCALE3);
+	__HAL_PWR_VOLTAGESCALING_CONFIG(PWR_REGULATOR_VOLTAGE_SCALE1);
 
 	/** Initializes the RCC Oscillators according to the specified parameters
 	 * in the RCC_OscInitTypeDef structure.
@@ -231,8 +247,19 @@ void SystemClock_Config(void) {
 	RCC_OscInitStruct.OscillatorType = RCC_OSCILLATORTYPE_HSI;
 	RCC_OscInitStruct.HSIState = RCC_HSI_ON;
 	RCC_OscInitStruct.HSICalibrationValue = RCC_HSICALIBRATION_DEFAULT;
-	RCC_OscInitStruct.PLL.PLLState = RCC_PLL_NONE;
+	RCC_OscInitStruct.PLL.PLLState = RCC_PLL_ON;
+	RCC_OscInitStruct.PLL.PLLSource = RCC_PLLSOURCE_HSI;
+	RCC_OscInitStruct.PLL.PLLM = 8;
+	RCC_OscInitStruct.PLL.PLLN = 180;
+	RCC_OscInitStruct.PLL.PLLP = RCC_PLLP_DIV2;
+	RCC_OscInitStruct.PLL.PLLQ = 4;
 	if (HAL_RCC_OscConfig(&RCC_OscInitStruct) != HAL_OK) {
+		Error_Handler();
+	}
+
+	/** Activate the Over-Drive mode
+	 */
+	if (HAL_PWREx_EnableOverDrive() != HAL_OK) {
 		Error_Handler();
 	}
 
@@ -240,14 +267,64 @@ void SystemClock_Config(void) {
 	 */
 	RCC_ClkInitStruct.ClockType = RCC_CLOCKTYPE_HCLK | RCC_CLOCKTYPE_SYSCLK
 			| RCC_CLOCKTYPE_PCLK1 | RCC_CLOCKTYPE_PCLK2;
-	RCC_ClkInitStruct.SYSCLKSource = RCC_SYSCLKSOURCE_HSI;
+	RCC_ClkInitStruct.SYSCLKSource = RCC_SYSCLKSOURCE_PLLCLK;
 	RCC_ClkInitStruct.AHBCLKDivider = RCC_SYSCLK_DIV1;
-	RCC_ClkInitStruct.APB1CLKDivider = RCC_HCLK_DIV1;
-	RCC_ClkInitStruct.APB2CLKDivider = RCC_HCLK_DIV1;
+	RCC_ClkInitStruct.APB1CLKDivider = RCC_HCLK_DIV4;
+	RCC_ClkInitStruct.APB2CLKDivider = RCC_HCLK_DIV2;
 
-	if (HAL_RCC_ClockConfig(&RCC_ClkInitStruct, FLASH_LATENCY_0) != HAL_OK) {
+	if (HAL_RCC_ClockConfig(&RCC_ClkInitStruct, FLASH_LATENCY_5) != HAL_OK) {
 		Error_Handler();
 	}
+}
+
+/**
+ * @brief CAN1 Initialization Function
+ * @param None
+ * @retval None
+ */
+static void MX_CAN1_Init(void) {
+
+	/* USER CODE BEGIN CAN1_Init 0 */
+
+	/* USER CODE END CAN1_Init 0 */
+
+	/* USER CODE BEGIN CAN1_Init 1 */
+
+	/* USER CODE END CAN1_Init 1 */
+	hcan1.Instance = CAN1;
+	hcan1.Init.Prescaler = 18;
+	hcan1.Init.Mode = CAN_MODE_NORMAL;
+	hcan1.Init.SyncJumpWidth = CAN_SJW_1TQ;
+	hcan1.Init.TimeSeg1 = CAN_BS1_2TQ;
+	hcan1.Init.TimeSeg2 = CAN_BS2_2TQ;
+	hcan1.Init.TimeTriggeredMode = DISABLE;
+	hcan1.Init.AutoBusOff = DISABLE;
+	hcan1.Init.AutoWakeUp = DISABLE;
+	hcan1.Init.AutoRetransmission = DISABLE;
+	hcan1.Init.ReceiveFifoLocked = DISABLE;
+	hcan1.Init.TransmitFifoPriority = DISABLE;
+	if (HAL_CAN_Init(&hcan1) != HAL_OK) {
+		Error_Handler();
+	}
+	/* USER CODE BEGIN CAN1_Init 2 */
+
+	CAN_FilterTypeDef canfilterconfig;
+
+	canfilterconfig.FilterActivation = CAN_FILTER_ENABLE;
+	canfilterconfig.FilterBank = 18;
+	canfilterconfig.FilterFIFOAssignment = CAN_RX_FIFO0;
+	canfilterconfig.FilterIdHigh = 0;
+	canfilterconfig.FilterIdLow = 0x0000;
+	canfilterconfig.FilterMaskIdHigh = 0x000;
+	canfilterconfig.FilterMaskIdLow = 0x0000;
+	canfilterconfig.FilterMode = CAN_FILTERMODE_IDMASK;
+	canfilterconfig.FilterScale = CAN_FILTERSCALE_32BIT;
+	canfilterconfig.SlaveStartFilterBank = 20;
+
+	HAL_CAN_ConfigFilter(&hcan1, &canfilterconfig);
+
+	/* USER CODE END CAN1_Init 2 */
+
 }
 
 /**
@@ -269,7 +346,7 @@ static void MX_TIM1_Init(void) {
 
 	/* USER CODE END TIM1_Init 1 */
 	htim1.Instance = TIM1;
-	htim1.Init.Prescaler = 15;
+	htim1.Init.Prescaler = 179;
 	htim1.Init.CounterMode = TIM_COUNTERMODE_UP;
 	htim1.Init.Period = 65535;
 	htim1.Init.ClockDivision = TIM_CLOCKDIVISION_DIV1;
@@ -441,7 +518,7 @@ static void MX_TIM9_Init(void) {
 
 	/* USER CODE END TIM9_Init 1 */
 	htim9.Instance = TIM9;
-	htim9.Init.Prescaler = 15;
+	htim9.Init.Prescaler = 179;
 	htim9.Init.CounterMode = TIM_COUNTERMODE_UP;
 	htim9.Init.Period = 65535;
 	htim9.Init.ClockDivision = TIM_CLOCKDIVISION_DIV1;
@@ -716,10 +793,10 @@ void Adaptive(void *argument) {
 				}
 
 			}
-			osDelay(10);
 		} else {
-			osDelay(10);
 		}
+
+		osDelay(100);
 
 	}
 	/* USER CODE END Adaptive */
@@ -744,11 +821,14 @@ void BlindSpot(void *argument) {
 			} else {
 
 			}
-			osDelay(10);
+
 		} else {
-			osDelay(10);
+
 		}
+
+		osDelay(100);
 	}
+
 	/* USER CODE END BlindSpot */
 }
 
@@ -768,14 +848,14 @@ void AutoPark(void *argument) {
 	uint16_t Distances[4] = { 0 }; // Array to store distances from the ultrasonic sensors.
 
 	for (;;) {
-		if (1) {
+		if (task_flag == 'b') {
 			HAL_UART_Transmit(&huart1, (uint8_t*) temp2, strlen(temp2), 10);
 
 			// Convert the integer to a string
 			snprintf(buffer, sizeof(buffer), "%d\r\n", Distances[0]);
 			// Send the string over UART
 			HAL_UART_Transmit(&huart1, (uint8_t*) buffer, strlen(buffer),
-					HAL_MAX_DELAY);
+			HAL_MAX_DELAY);
 
 			HAL_Delay(1000);
 
@@ -817,7 +897,7 @@ void AutoPark(void *argument) {
 				snprintf(buffer, sizeof(buffer), "%d\r\n", Distances[0]);
 				// Send the string over UART
 				HAL_UART_Transmit(&huart1, (uint8_t*) buffer, strlen(buffer),
-						HAL_MAX_DELAY);
+				HAL_MAX_DELAY);
 
 				Car_Void_GoForward(50);
 				while ((UltraSonic_ReadStatusENUM_GetRead(ULTRASONIC2,
@@ -825,25 +905,16 @@ void AutoPark(void *argument) {
 					;
 			}
 
-			/*HAL_Delay(1000);
-
-			 for(int x = 0; x < 20; x++)
-			 {
-			 while ((UltraSonic_ReadStatusENUM_GetRead(ULTRASONIC2,Distances, 1)) != READ_EXIST);
-
-			 }
-			 */
-
 			/*Check the spot is going to fit the car*/
 
-			while (Distances[0] > 22) {
+			while (Distances[0] > 20) {
 				Car_Void_GoForward(50);
 
 				// Convert the integer to a string
 				snprintf(buffer, sizeof(buffer), "%d\r\n", Distances[0]);
 				// Send the string over UART
 				HAL_UART_Transmit(&huart1, (uint8_t*) buffer, strlen(buffer),
-						HAL_MAX_DELAY);
+				HAL_MAX_DELAY);
 
 				while ((UltraSonic_ReadStatusENUM_GetRead(ULTRASONIC2,
 						Distances, 1)) != READ_EXIST)
@@ -854,7 +925,7 @@ void AutoPark(void *argument) {
 			snprintf(buffer, sizeof(buffer), "%d\r\n", Distances[0]);
 			// Send the string over UART
 			HAL_UART_Transmit(&huart1, (uint8_t*) buffer, strlen(buffer),
-					HAL_MAX_DELAY);
+			HAL_MAX_DELAY);
 
 			Car_Void_Stop();
 
@@ -867,14 +938,14 @@ void AutoPark(void *argument) {
 			HAL_Delay(1400);
 			Car_Void_Stop();
 
-			while ((UltraSonic_ReadStatusENUM_GetRead(ULTRASONIC1_4, Distances, 1))
-					!= READ_EXIST)
+			while ((UltraSonic_ReadStatusENUM_GetRead(ULTRASONIC1_4, Distances,
+					1)) != READ_EXIST)
 				;
-			while ((UltraSonic_ReadStatusENUM_GetRead(ULTRASONIC1_4, Distances, 1))
-					!= READ_EXIST)
+			while ((UltraSonic_ReadStatusENUM_GetRead(ULTRASONIC1_4, Distances,
+					1)) != READ_EXIST)
 				;
-			while ((UltraSonic_ReadStatusENUM_GetRead(ULTRASONIC1_4, Distances, 1))
-					!= READ_EXIST)
+			while ((UltraSonic_ReadStatusENUM_GetRead(ULTRASONIC1_4, Distances,
+					1)) != READ_EXIST)
 				;
 			while (Distances[1] > 5) {
 
@@ -882,18 +953,14 @@ void AutoPark(void *argument) {
 				snprintf(buffer, sizeof(buffer), "%d\r\n", Distances[0]);
 				// Send the string over UART
 				HAL_UART_Transmit(&huart1, (uint8_t*) buffer, strlen(buffer),
-						HAL_MAX_DELAY);
+				HAL_MAX_DELAY);
 
 				Car_Void_GoBackward(50);
-				while ((UltraSonic_ReadStatusENUM_GetRead(ULTRASONIC1_4, Distances, 1))
-						!= READ_EXIST)
+				while ((UltraSonic_ReadStatusENUM_GetRead(ULTRASONIC1_4,
+						Distances, 1)) != READ_EXIST)
 					;
 			}
 
-			//Car_Void_TurnRight(10, 70);
-
-			//Car_Void_GoBackward(50);
-			//HAL_Delay(1500);
 			Car_Void_Stop();
 			HAL_Delay(1000);
 			Car_Void_TurnLeft(100, 100);
@@ -913,7 +980,7 @@ void AutoPark(void *argument) {
 				snprintf(buffer, sizeof(buffer), "%d\r\n", Distances[0]);
 				// Send the string over UART
 				HAL_UART_Transmit(&huart1, (uint8_t*) buffer, strlen(buffer),
-						HAL_MAX_DELAY);
+				HAL_MAX_DELAY);
 
 				Car_Void_GoForward(40);
 				while ((UltraSonic_ReadStatusENUM_GetRead(ULTRASONIC3,
@@ -921,33 +988,8 @@ void AutoPark(void *argument) {
 					;
 			}
 
-			//Car_Void_GoForward(25);
-			//HAL_Delay(300);
 			Car_Void_Stop();
-
 			HAL_Delay(10000);
-
-			/*UltraSonic_ReadStatusENUM_GetRead(ULTRASONIC1,&Distance[2],&Distance[3]);
-
-			 while (Distance[2] > 8)
-			 {
-			 Car_Void_GoForward(50);
-			 UltraSonic_ReadStatusENUM_GetRead(ULTRASONIC1,&Distance[0],&Distance[2]);
-			 }
-
-			 //	Car_Void_Stop();
-			 HAL_Delay(500);
-			 Car_Void_GoBackward(50);
-			 HAL_Delay(300);
-			 Car_Void_Stop();*/
-
-			/*while (Distance[2] > 8)
-			 {
-			 Car_Void_GoBackward(80);
-			 UltraSonic_ReadStatusENUM_GetRead(ULTRASONIC1,&Distance[0],&Distance[1]);
-			 }
-			 Car_Void_Stop();
-			 */
 
 			osDelay(35);
 		} else {
@@ -956,6 +998,28 @@ void AutoPark(void *argument) {
 
 	}
 	/* USER CODE END AutoPark */
+}
+
+/* USER CODE BEGIN Header_CAN_MSG */
+/**
+ * @brief Function implementing the can_msg thread.
+ * @param argument: Not used
+ * @retval None
+ */
+/* USER CODE END Header_CAN_MSG */
+void CAN_MSG(void *argument) {
+	/* USER CODE BEGIN CAN_MSG */
+	/* Infinite loop */
+	for (;;) {
+
+		printf("OTA \r\n");
+		while (HAL_CAN_GetRxFifoFillLevel(&hcan1, CAN_RX_FIFO0) == 0) {
+		};
+		HAL_CAN_GetRxMessage(&hcan1, CAN_RX_FIFO0, &RxHeader, RxData);
+		bootloader_can_read_data();
+	}
+
+	/* USER CODE END CAN_MSG */
 }
 
 /**
@@ -968,13 +1032,13 @@ void AutoPark(void *argument) {
  */
 void HAL_TIM_PeriodElapsedCallback(TIM_HandleTypeDef *htim) {
 	/* USER CODE BEGIN Callback 0 */
-
+//
 	/* USER CODE END Callback 0 */
 	if (htim->Instance == TIM5) {
 		HAL_IncTick();
 	}
 	/* USER CODE BEGIN Callback 1 */
-
+//
 	/* USER CODE END Callback 1 */
 }
 

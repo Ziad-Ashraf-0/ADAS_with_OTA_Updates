@@ -36,8 +36,8 @@
 #define MV_CAR 0x91 // This command is used to move the car
 
 /* 1. Define the WiFi credentials */
-#define WIFI_SSID "ZIAD"
-#define WIFI_PASSWORD "ZIADee66"
+#define WIFI_SSID "pi"
+#define WIFI_PASSWORD "12345678"
 /* 2. Define the API Key */
 #define API_KEY "AIzaSyAxVCJor23p01JiiVS2lQR0lVyy_Nfkmdw"
 /* 3. Define the user Email and password that alreadey registerd or added in
