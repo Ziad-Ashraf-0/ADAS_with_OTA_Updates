@@ -34,8 +34,8 @@
 
 #define GOTO_BL 0x66 // This command is used to goto bl from user app
 
-#define WIFI_SSID "Fiber"
-#define WIFI_PASSWORD "P@ssw0rd@MCIT"
+#define WIFI_SSID "pi"
+#define WIFI_PASSWORD "12345678"
 /* 2. Define the API Key */
 #define API_KEY "AIzaSyAxVCJor23p01JiiVS2lQR0lVyy_Nfkmdw"
 /* 3. Define the user Email and password that alreadey registerd or added in

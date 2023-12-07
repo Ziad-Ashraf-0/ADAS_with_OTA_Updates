@@ -45,7 +45,7 @@ osSemaphoreId_t xSemaphoreAutoPark;
 
 /* Private macro -------------------------------------------------------------*/
 /* USER CODE BEGIN PM */
-#define MIN_DISTANCE_TO_BE_IN_PARKING_LANE			30
+#define MIN_DISTANCE_TO_BE_IN_PARKING_LANE			25
 
 /* USER CODE END PM */
 
@@ -152,6 +152,7 @@ int main(void) {
 	//HAL_TIM_IC_Start_IT(&htim8, TIM_CHANNEL_2);
 	HAL_TIM_PWM_Start(&htim3, TIM_CHANNEL_1);
 	HAL_TIM_PWM_Start(&htim4, TIM_CHANNEL_1);
+
 	/* USER CODE END 2 */
 
 	/* Init scheduler */
@@ -767,7 +768,7 @@ void AutoPark(void *argument) {
 	uint16_t Distances[4] = { 0 }; // Array to store distances from the ultrasonic sensors.
 
 	for (;;) {
-		if (task_flag == 'b') {
+		if (1) {
 			HAL_UART_Transmit(&huart1, (uint8_t*) temp2, strlen(temp2), 10);
 
 			// Convert the integer to a string
@@ -835,7 +836,7 @@ void AutoPark(void *argument) {
 
 			/*Check the spot is going to fit the car*/
 
-			while (Distances[0] > 25) {
+			while (Distances[0] > 22) {
 				Car_Void_GoForward(50);
 
 				// Convert the integer to a string
@@ -861,9 +862,9 @@ void AutoPark(void *argument) {
 
 			/*Start Parking*/
 			Car_Void_GoBackward(50);
-			HAL_Delay(300);
-			Car_Void_TurnRight(10, 70);
-			HAL_Delay(800);
+			HAL_Delay(650);
+			Car_Void_TurnRight(0, 80);
+			HAL_Delay(1400);
 			Car_Void_Stop();
 
 			while ((UltraSonic_ReadStatusENUM_GetRead(ULTRASONIC1_4, Distances, 1))
@@ -875,7 +876,7 @@ void AutoPark(void *argument) {
 			while ((UltraSonic_ReadStatusENUM_GetRead(ULTRASONIC1_4, Distances, 1))
 					!= READ_EXIST)
 				;
-			while (Distances[0] > 7 && Distances[1] > 5) {
+			while (Distances[1] > 5) {
 
 				// Convert the integer to a string
 				snprintf(buffer, sizeof(buffer), "%d\r\n", Distances[0]);
@@ -895,8 +896,8 @@ void AutoPark(void *argument) {
 			//HAL_Delay(1500);
 			Car_Void_Stop();
 			HAL_Delay(1000);
-			Car_Void_TurnLeft(50, 50);
-			HAL_Delay(1550);
+			Car_Void_TurnLeft(100, 100);
+			HAL_Delay(430);
 			while ((UltraSonic_ReadStatusENUM_GetRead(ULTRASONIC3, Distances, 1))
 					!= READ_EXIST)
 				;
