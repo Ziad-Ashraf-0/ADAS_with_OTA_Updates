@@ -181,11 +181,10 @@ Read_Status UltraSonic_ReadStatusENUM_GetRead(Ultra_Sonic_Type Ultra_Sonic,
 		//This Function is to Count the Time Between Rising and Failling Edges in 1 Cycle using ICU.
 
 		if (Is_First_Captured_CH2 == 2) {
-		distances[0] = Distance_CH2;
-		status = READ_EXIST;
-		Is_First_Captured_CH2 = 0; // set it back to false
+			distances[0] = Distance_CH2;
+			status = READ_EXIST;
+			Is_First_Captured_CH2 = 0; // set it back to false
 		}
-
 
 		break;
 
@@ -197,11 +196,12 @@ Read_Status UltraSonic_ReadStatusENUM_GetRead(Ultra_Sonic_Type Ultra_Sonic,
 
 		//This Function is to Count the Time Between Rising and Failling Edges in 1 Cycle using ICU.
 
-		while (Is_First_Captured_CH3 != 2) {
+		if (Is_First_Captured_CH3 == 2) {
+
+			distances[0] = Distance_CH3;
+			status = READ_EXIST;
+			Is_First_Captured_CH3 = 0; // set it back to false
 		}
-		distances[0] = Distance_CH3;
-		status = READ_EXIST;
-		Is_First_Captured_CH3 = 0; // set it back to false
 
 		break;
 
@@ -214,9 +214,9 @@ Read_Status UltraSonic_ReadStatusENUM_GetRead(Ultra_Sonic_Type Ultra_Sonic,
 		//This Function is to Count the Time Between Rising and Failling Edges in 1 Cycle using ICU.
 
 		if (Is_First_Captured_CH4 == 2) {
-		distances[0] = Distance_CH4;
-		status = READ_EXIST;
-		Is_First_Captured_CH4 = 0;
+			distances[0] = Distance_CH4;
+			status = READ_EXIST;
+			Is_First_Captured_CH4 = 0;
 		}
 
 		break;
@@ -231,11 +231,11 @@ Read_Status UltraSonic_ReadStatusENUM_GetRead(Ultra_Sonic_Type Ultra_Sonic,
 
 		if (Is_First_Captured_CH1 == 2 && Is_First_Captured_CH4 == 2) {
 
-		distances[0] = Distance_CH1;
-		distances[1] = Distance_CH4;
-		status = READ_EXIST;
-		Is_First_Captured_CH1 = 0;
-		Is_First_Captured_CH4 = 0;
+			distances[0] = Distance_CH1;
+			distances[1] = Distance_CH4;
+			status = READ_EXIST;
+			Is_First_Captured_CH1 = 0;
+			Is_First_Captured_CH4 = 0;
 		}
 		break;
 

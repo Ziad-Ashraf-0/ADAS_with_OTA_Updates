@@ -18,14 +18,14 @@ uint8_t IR_Sensors_Values[5];
 int32_t Motor_Speed;
 int32_t Motor_Base_Speed = 100;
 int32_t RightMotorSpeed, LeftMotorSpeed;
-int32_t MotorMaxSpeed = 100;
+int32_t MotorMaxSpeed =100;
 int32_t SumError;
 
 // PID Parameters
 int32_t Error = 0;
 int32_t PreError = 0;
 int32_t Kp = 25;
-int32_t Kd = 5;
+int32_t Kd = 3;
 int32_t Ki = 0;
 
 /**
@@ -188,7 +188,7 @@ void Lane_Runnable(void)
 	/* move with certain speed */
 	Car_Void_Go_Lane(LeftMotorSpeed, RightMotorSpeed);
 
-	HAL_Delay(20);
+	//HAL_Delay(20);
 
 	/* assign Current Error as a previous Error to help us Calculate the differentiation of Error  */
 	PreError = Error;
