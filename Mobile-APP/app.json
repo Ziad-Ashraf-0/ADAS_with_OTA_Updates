@@ -1,0 +1,10 @@
+{
+  "expo": {
+    "scheme": "acme",
+    "web": {
+      "bundler": "metro"
+    },
+    "name": "fota-react-native",
+    "slug": "fota-react-native"
+  }
+}
