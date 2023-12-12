@@ -10,3 +10,19 @@ ESP32_OTA/.vscode/.browse.c_cpp.db*
 ESP32_OTA/.vscode/c_cpp_properties.json
 ESP32_OTA/.vscode/launch.json
 ESP32_OTA/.vscode/ipch
+
+
+Mobile_APP/node_modules/
+Mobile_APP/.expo/
+Mobile_APP/dist/
+Mobile_APP/npm-debug.*
+Mobile_APP/*.jks
+Mobile_APP/*.p8
+Mobile_APP/*.p12
+Mobile_APP/*.key
+Mobile_APP/*.mobileprovision
+Mobile_APP/*.orig.*
+Mobile_APP/web-build/
+
+# macOS
+Mobile_APP/.DS_Store
