@@ -1,5 +1,9 @@
 # Ignore Debug folder in RTOS_APP
 RTOS_APP/Debug/
+Target/RTOS_APP/Debug/
+Target/branching_unit/Debug/
+Target/Bootloader/Debug/
+Target/.metadata/
 .metadata/
 ESP32_OTA/.pio
 ESP32_OTA/.vscode/.browse.c_cpp.db*
